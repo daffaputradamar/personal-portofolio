@@ -1,60 +1,34 @@
 'use server'
 
 import { z } from 'zod'
-import { Resend } from 'resend'
-import { ContactFormSchema, NewsletterFormSchema } from '@/lib/schemas'
-import ContactFormEmail from '@/emails/contact-form-email'
+import { ContactFormSchema } from '@/lib/schemas'
+import { renderContactFormEmail } from '@/emails/contact-form-email'
+import Mail from 'nodemailer/lib/mailer'
+import { emailTransport } from '@/emails/email-config'
 
 type ContactFormInputs = z.infer<typeof ContactFormSchema>
-type NewsletterFormInputs = z.infer<typeof NewsletterFormSchema>
-const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function sendEmail(data: ContactFormInputs) {
   const result = ContactFormSchema.safeParse(data)
-
+  
   if (result.error) {
     return { error: result.error.format() }
   }
 
   try {
     const { name, email, message } = result.data
-    const { data, error } = await resend.emails.send({
-      from: 'daffaputradamar@gmail.com',
+
+    const emailHtml = renderContactFormEmail({ name, email, message });
+
+    const mailOptions: Mail.Options = {
+      from: process.env.EMAIL_ADDRESS,
       to: [email],
+      cc: process.env.EMAIL_ADDRESS,
       subject: 'Contact form submission',
-      text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`,
-      react: ContactFormEmail({ name, email, message })
-    })
-
-    if (!data || error) {
-      throw new Error('Failed to send email')
+      html: emailHtml
     }
 
-    return { success: true }
-  } catch (error) {
-    return { error }
-  }
-}
-
-export async function subscribe(data: NewsletterFormInputs) {
-  const result = NewsletterFormSchema.safeParse(data)
-
-  if (result.error) {
-    return { error: result.error.format() }
-  }
-
-  try {
-    const { email } = result.data
-    const { data, error } = await resend.contacts.create({
-      email: email,
-      audienceId: process.env.RESEND_AUDIENCE_ID as string
-    })
-
-    if (!data || error) {
-      throw new Error('Failed to subscribe')
-    }
-
-    // TODO: Send a welcome email
+    await emailTransport.sendMail(mailOptions)
 
     return { success: true }
   } catch (error) {
