@@ -15,7 +15,7 @@ export default function Experiences() {
       ]
 
     return (
-        <section id="experience" className="py-20 md:py-32">
+        <section id="experience" className="md:pt-24 pb-24">
             <div className="container px-4 md:px-6">
                 <h2 className="title mb-12 text-center">Experience</h2>
                 <div className="space-y-10 relative before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-foreground/50 before:to-transparent">
