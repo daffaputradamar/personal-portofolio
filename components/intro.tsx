@@ -3,8 +3,9 @@
 import Image from 'next/image'
 import authorImage from '@/public/images/authors/me.jpg'
 import { Button, buttonVariants } from './ui/button'
-import { DownloadIcon } from '@radix-ui/react-icons'
+import { DownloadIcon, EnvelopeClosedIcon, EnvelopeOpenIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
+import Link from 'next/link'
 
 export default function Intro() {
   return (
@@ -16,7 +17,10 @@ export default function Intro() {
           passionate about learning new technologies and sharing knowledge with
           others.
         </p>
-        <a href="docs/cv-daffa.pdf" download className={cn('mt-4 flex gap-x-2',buttonVariants())}>Download CV <DownloadIcon className='animate-bounce' /></a>
+        <div className="mt-8 md:mt-4 flex flex-col md:flex-row items-center gap-4"> 
+          <a href="docs/cv-daffa.pdf" download className={cn('w-full flex gap-x-2', buttonVariants({size: 'lg'}))}>Download Resume <DownloadIcon className='animate-bounce w-6' /></a>
+          <Link href="/contact" className={cn('w-full flex gap-x-2', buttonVariants({size: 'lg', variant: 'outline'}))}>Contact Me <EnvelopeClosedIcon className='w-6' /></Link>
+        </div>
       </div>
       <div className='relative'>
         <Image

@@ -11,7 +11,7 @@ export const revalidate = 0;
 export default function Header() {
   const pathname = usePathname();
 
-  const isActive = (path: string) => pathname.startsWith(path) ? 'text-foreground font-semibold bg-muted/60 rounded-full' : 'hover:text-foreground';
+  const isActive = (path: string) => pathname.startsWith(path) ? 'text-foreground font-semibold bg-muted/70 rounded-full' : 'hover:text-foreground';
 
   return (
     <header className='fixed inset-x-0 top-0 z-50 bg-background/75 py-6 backdrop-blur-sm'>

@@ -6,7 +6,6 @@ import MDXContent from '@/components/mdx-content'
 import { getPosts, getPostBySlug } from '@/lib/posts'
 import { ArrowLeftIcon } from '@radix-ui/react-icons'
 import { notFound } from 'next/navigation'
-import NewsletterForm from '@/components/newsletter-form'
 
 export async function generateStaticParams() {
   const posts = await getPosts()
@@ -58,10 +57,6 @@ export default async function Post({ params }: { params: { slug: string } }) {
         <main className='prose mt-16 dark:prose-invert'>
           <MDXContent source={content} />
         </main>
-
-        <footer className='mt-16'>
-          <NewsletterForm />
-        </footer>
       </div>
     </section>
   )
