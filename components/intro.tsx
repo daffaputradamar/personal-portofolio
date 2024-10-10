@@ -2,8 +2,8 @@
 
 import Image from 'next/image'
 import authorImage from '@/public/images/authors/me.jpg'
-import { Button, buttonVariants } from './ui/button'
-import { DownloadIcon, EnvelopeClosedIcon, EnvelopeOpenIcon } from '@radix-ui/react-icons'
+import { buttonVariants } from './ui/button'
+import { EnvelopeClosedIcon, EnvelopeOpenIcon, ExternalLinkIcon } from '@radix-ui/react-icons'
 import { cn } from '@/lib/utils'
 import Link from 'next/link'
 
@@ -28,7 +28,7 @@ export default function Intro() {
           </span>
         </div>
         <div className="mt-8 md:mt-4 flex flex-col md:flex-row items-center gap-5">
-          <a href="docs/cv-daffa.pdf" download className={cn('w-full flex gap-x-2', buttonVariants({ size: 'lg' }))}>Download Resume <DownloadIcon className='animate-bounce w-6' /></a>
+          <a href="docs/cv-daffa.pdf" target='_blank' className={cn('w-full flex gap-x-2', buttonVariants({ size: 'lg' }))}>View Full Résumé <ExternalLinkIcon className='w-6' /></a>
           <Link href="/contact" className={cn('w-full flex gap-x-2', buttonVariants({ size: 'lg', variant: 'outline' }))}>Contact Me <EnvelopeClosedIcon className='w-6' /></Link>
         </div>
       </div>
