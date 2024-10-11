@@ -15,7 +15,9 @@ export default function Header() {
   const navRef = useRef<HTMLUListElement>(null); // Reference for the nav container
 
   useEffect(() => {
-    const currentLink = navRef.current?.querySelector(`a[href="${pathname}"]`)?.parentNode;
+    let curPathname = pathname.split("/")[1]
+    
+    const currentLink = navRef.current?.querySelector(`a[href="/${curPathname}"]`)?.parentNode;
     if (currentLink && navRef.current) {
       const linkRect = (currentLink as HTMLElement).getBoundingClientRect();
       const navRect = navRef.current.getBoundingClientRect();

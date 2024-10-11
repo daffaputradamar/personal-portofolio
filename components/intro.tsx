@@ -23,7 +23,7 @@ export default function Intro() {
           <div className='wave-hello text-8xl text-center'>
             👋
           </div>
-          <span className='text-2xl font-bold bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent'>
+          <span className='text-2xl font-bold bg-gradient-to-r from-green-500 to-green-300 bg-clip-text text-transparent'>
             Nice to meet you!
           </span>
         </div>
