@@ -7,6 +7,7 @@ import './globals.css'
 import Providers from '@/components/providers'
 import Header from '@/components/header'
 import Footer from '@/components/footer'
+import { InstantMouseGradient } from '@/components/instant-mouse-gradient'
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' })
 const playfair = Playfair_Display({
@@ -37,6 +38,7 @@ export default function RootLayout({
           <Header />
           <main className='grow'>{children}</main>
           <Footer />
+          <InstantMouseGradient />
         </Providers>
       </body>
     </html>

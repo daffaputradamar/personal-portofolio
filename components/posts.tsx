@@ -5,12 +5,12 @@ import { formatDate } from '@/lib/utils'
 
 export default function Posts({ posts }: { posts: PostMetadata[] }) {
   return (
-    <ul className='flex flex-col gap-8'>
+    <ul className='flex flex-col gap-4'>
       {posts.map(post => (
         <li key={post.slug}>
           <Link
             href={`/posts/${post.slug}`}
-            className='flex flex-col justify-between gap-x-4 gap-y-1 sm:flex-row'
+            className='flex flex-col justify-between gap-x-4 gap-y-1 sm:flex-row border-t-2 border-transparent hover:bg-primary/10 hover:border-primary/40 hover:shadow-md rounded-md p-5 transition duration-200'
           >
             <div className='max-w-lg'>
               <p className='text-lg font-semibold'>{post.title}</p>

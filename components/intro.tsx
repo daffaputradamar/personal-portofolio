@@ -13,7 +13,7 @@ export default function Intro() {
       <div className='mt-2 flex-1 md:mt-0 flex flex-col justify-between'>
         <div>
           <h1 className='title no-underline'>Hey, I&#39;m Daffa.</h1>
-          <p className='mt-3 font-light text-muted-foreground'>
+          <p className='mt-3 text-muted-foreground'>
             I&#39;m a software engineer based in Surabaya, Indonesia. I&#39;m
             passionate about learning new technologies and sharing knowledge with
             others.
