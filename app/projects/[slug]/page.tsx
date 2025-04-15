@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { formatDate } from '@/lib/utils'
 import MDXContent from '@/components/mdx-content'
-import { ArrowLeftIcon } from '@radix-ui/react-icons'
+import { ArrowLeftIcon, ExternalLinkIcon } from '@radix-ui/react-icons'
 import { getProjectBySlug, getProjects } from '@/lib/projects'
 import { notFound } from 'next/navigation'
 
@@ -27,7 +27,7 @@ export default async function Project({
   }
 
   const { metadata, content } = project
-  const { title, image, author, publishedAt } = metadata
+  const { title, image, author, publishedAt, link } = metadata
 
   return (
     <section className='pb-24 pt-32'>
@@ -52,7 +52,17 @@ export default async function Project({
         )}
 
         <header>
-          <h1 className='title'>{title}</h1>
+          <div className='flex gap-4 items-center mb-4'>
+            <h1 className='title'>{title}</h1>
+            {
+              link && (
+                <a href={link} target='_blank' className='inline-flex items-center gap-2 text-sm mt-3'>
+                  <span>Check it out</span>
+                  <ExternalLinkIcon className='h-5 w-5' />
+                </a>
+              )
+            }
+          </div>
           <p className='mt-3 text-xs text-muted-foreground'>
             {author} / {formatDate(publishedAt ?? '')}
           </p>
