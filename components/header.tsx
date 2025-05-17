@@ -53,7 +53,6 @@ export default function Header() {
           <MobileNavHeader>
             <div className="flex items-center gap-2">
               <NavbarLogo />
-              <Link href="/" className="font-serif text-2xl font-bold">DF</Link>
             </div>
             <MobileNavToggle
               isOpen={isMobileMenuOpen}
