@@ -14,7 +14,7 @@ export default function Intro() {
         <div>
           <h1 className='title no-underline'>Hey, I&#39;m Daffa.</h1>
           <p className='mt-3 text-muted-foreground'>
-            I&#39;m a software engineer based in Surabaya, Indonesia. I&#39;m
+            I&#39;m a software engineer based in <span className='text-foreground'>Surabaya, Indonesia</span> (available for remote work). I&#39;m
             passionate about learning new technologies and sharing knowledge with
             others.
           </p>
@@ -27,6 +27,7 @@ export default function Intro() {
             Nice to meet you!
           </span>
         </div>
+        
         <div className="mt-8 md:mt-4 flex flex-col md:flex-row items-center gap-5">
           <a href="docs/cv-daffa.pdf" target='_blank' className={cn('w-full flex gap-x-2', buttonVariants({ size: 'lg' }))}>View Full Résumé <ExternalLinkIcon className='w-6' /></a>
           <Link href="/contact" className={cn('w-full flex gap-x-2', buttonVariants({ size: 'lg', variant: 'outline' }))}>Contact Me <EnvelopeClosedIcon className='w-6' /></Link>
