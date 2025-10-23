@@ -1,4 +1,4 @@
-import { SiTypescript, SiReact, SiNextdotjs, SiTailwindcss, SiVuedotjs, SiNodedotjs, SiPrisma, SiPostgresql, SiFirebase, SiDrizzle, SiDotnet, SiApachekafka, SiDocker, SiLaravel, SiGithubcopilot, SiGooglegemini, SiOllama } from 'react-icons/si';
+import { SiTypescript, SiReact, SiNextdotjs, SiTailwindcss, SiVuedotjs, SiAngular, SiNodedotjs, SiPrisma, SiPostgresql, SiFirebase, SiDrizzle, SiDotnet, SiApachekafka, SiDocker, SiLaravel, SiGithubcopilot, SiGooglegemini, SiOllama } from 'react-icons/si';
 import { FaProjectDiagram } from 'react-icons/fa';
 
 const cardClassName = 'inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-xs font-medium transition-colors duration-200 group-hover:border-primary/50 group-hover:bg-primary/10';
@@ -13,6 +13,7 @@ export default function TechStack() {
         { name: 'React', icon: <SiReact className="text-cyan-400" size={iconSize} /> },
         { name: 'Next.js', icon: <SiNextdotjs className="text-black dark:text-white" size={iconSize} /> },
     { name: 'Vue.js', icon: <SiVuedotjs className="text-emerald-500" size={iconSize} /> },
+  { name: 'Angular', icon: <SiAngular className="text-red-500" size={iconSize} /> },
         { name: 'Tailwind CSS', icon: <SiTailwindcss className="text-sky-400" size={iconSize} /> },
       ],
     },
