@@ -26,6 +26,14 @@ export default function Header() {
     { name: "Contact", link: "/contact" },
   ];
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const getNavClassName = (link: string) => {
+    const isActive = link === "/" ? pathname === link : pathname.startsWith(link);
+    const baseClass = "relative flex w-full items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 md:inline-flex md:w-auto";
+    const activeClass = "text-background bg-primary/90 shadow-lg shadow-primary/30 after:absolute after:inset-x-2 after:-bottom-1 after:h-1 after:rounded-full after:bg-gradient-to-r after:from-primary/80 after:via-primary/60 after:to-primary/80";
+    const inactiveClass = "text-foreground/80 hover:text-foreground hover:bg-foreground/10";
+
+    return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
+  };
 
   return (
     <div className="fixed inset-x-0 top-0 z-50">
@@ -38,10 +46,7 @@ export default function Header() {
           <NavItems
             items={navItems.map((item) => ({
               ...item,
-              className:
-                pathname.startsWith(item.link)
-                  ? "font-semibold text-background bg-primary rounded-full px-4 py-2"
-                  : "text-foreground/80 hover:text-foreground px-4 py-2",
+              className: getNavClassName(item.link),
             }))}
           />
           <div className="flex items-center gap-4 z-50">
@@ -68,11 +73,8 @@ export default function Header() {
                 key={`mobile-link-${idx}`}
                 href={item.link}
                 onClick={() => setIsMobileMenuOpen(false)}
-                className={`relative block ${
-                  pathname.startsWith(item.link)
-                    ? "font-semibold text-background bg-primary rounded-full px-4 py-2"
-                    : "text-foreground/80 hover:text-foreground px-4 py-2"
-                }`}
+                className={getNavClassName(item.link)}
+                aria-current={pathname.startsWith(item.link) ? "page" : undefined}
               >
                 <span>{item.name}</span>
               </Link>

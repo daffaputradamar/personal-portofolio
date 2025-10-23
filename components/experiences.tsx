@@ -3,7 +3,7 @@ import { BackpackIcon } from "@radix-ui/react-icons"
 export default function Experiences() {
     const experiences = [
         { 
-          title: 'Senior IT Application Development Analyst',
+          title: 'Senior IT Application Developer',
           company: 'PT. Mitra Pinasthika Mulia',
           period: 'Jul 2021 - Present'
         },
