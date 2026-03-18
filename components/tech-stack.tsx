@@ -1,5 +1,8 @@
 import { SiTypescript, SiReact, SiNextdotjs, SiTailwindcss, SiVuedotjs, SiAngular, SiNodedotjs, SiPrisma, SiPostgresql, SiFirebase, SiDrizzle, SiDotnet, SiApachekafka, SiDocker, SiLaravel, SiGithubcopilot, SiGooglegemini, SiOllama } from 'react-icons/si';
 import { FaProjectDiagram } from 'react-icons/fa';
+import { OpenCode, Vllm } from '@lobehub/icons';
+import SqlServerIcon from './icons/sql-server-icon';
+
 
 const cardClassName = 'inline-flex items-center gap-2 rounded-full border border-border/60 bg-background/60 px-3 py-1.5 text-xs font-medium transition-colors duration-200 group-hover:border-primary/50 group-hover:bg-primary/10';
 const iconSize = 18;
@@ -31,8 +34,9 @@ export default function TechStack() {
       items: [
         { name: 'Prisma', icon: <SiPrisma className="text-slate-600 dark:text-slate-300" size={iconSize} /> },
         { name: 'Drizzle', icon: <SiDrizzle className="text-lime-500" size={iconSize} /> },
-        { name: 'PostgreSQL', icon: <SiPostgresql className="text-blue-800" size={iconSize} /> },
         { name: 'Apache Kafka', icon: <SiApachekafka className="text-black dark:text-white" size={iconSize} /> },
+        { name: 'PostgreSQL', icon: <SiPostgresql className="text-blue-800" size={iconSize} /> },
+        { name: 'SQL Server', icon: <SqlServerIcon className="size-4" /> },
       ],
     },
     {
@@ -47,7 +51,16 @@ export default function TechStack() {
       items: [
         { name: 'GitHub Copilot', icon: <SiGithubcopilot className="text-emerald-500" size={iconSize} /> },
         { name: 'Google Gemini', icon: <SiGooglegemini className="text-blue-500" size={iconSize} /> },
+        { name: 'OpenCode', icon: <OpenCode size={iconSize} /> },
+      ],
+    },
+    {
+      title: 'LLM Infrastructure',
+      items: [
+        { name: 'vLLM', icon: <Vllm.Color size={iconSize} /> },
+        { name: 'LiteLLM', icon: '🚅' },
         { name: 'Ollama', icon: <SiOllama className="text-slate-500" size={iconSize} /> },
+
       ],
     },
   ];

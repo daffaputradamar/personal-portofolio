@@ -44,7 +44,7 @@ export default function ContactForm() {
     <section className='relative isolate'>
       {/* Background pattern */}
       <svg
-        className='absolute inset-0 -z-10 h-full w-full stroke-zinc-200 opacity-75 [mask-image:radial-gradient(100%_100%_at_top_right,white,transparent)] dark:stroke-zinc-700'
+        className='absolute inset-0 -z-10 h-full w-full stroke-zinc-200 opacity-75 mask-[radial-gradient(100%_100%_at_top_right,white,transparent)] dark:stroke-zinc-700'
         aria-hidden='true'
       >
         <defs>

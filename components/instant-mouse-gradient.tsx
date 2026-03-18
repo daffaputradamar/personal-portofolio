@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react'
 
 export function InstantMouseGradient() {
   const gradientRef = useRef<HTMLDivElement>(null)
-  const animationRef = useRef<number>()
+  const animationRef = useRef<number>(undefined)
   const targetPosition = useRef({ x: -300, y: -300 })
   const currentPosition = useRef({ x: -300, y: -300 })
 

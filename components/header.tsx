@@ -29,7 +29,7 @@ export default function Header() {
   const getNavClassName = (link: string) => {
     const isActive = link === "/" ? pathname === link : pathname.startsWith(link);
     const baseClass = "relative flex w-full items-center justify-center rounded-full px-4 py-2 text-sm font-medium transition-colors duration-200 md:inline-flex md:w-auto";
-    const activeClass = "text-background bg-primary/90 shadow-lg shadow-primary/30 after:absolute after:inset-x-2 after:-bottom-1 after:h-1 after:rounded-full after:bg-gradient-to-r after:from-primary/80 after:via-primary/60 after:to-primary/80";
+    const activeClass = "text-background bg-primary/90 shadow-lg shadow-primary/30 after:absolute after:inset-x-2 after:-bottom-1 after:h-1 after:rounded-full after:bg-linear-to-r after:from-primary/80 after:via-primary/60 after:to-primary/80";
     const inactiveClass = "text-foreground/80 hover:text-foreground hover:bg-foreground/10";
 
     return `${baseClass} ${isActive ? activeClass : inactiveClass}`;
