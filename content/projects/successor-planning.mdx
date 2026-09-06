@@ -1,0 +1,25 @@
+---
+title: 'Successor Planning'
+summary: 'Decision support for HR succession planning, combining AHP and TOPSIS scoring with LLM-driven scenario simulation.'
+author: 'Daffa Akbar'
+publishedAt: '2026-06-22'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Python', 'AHP', 'TOPSIS', 'LangChain', 'vLLM']
+confidential: true
+category: 'internal'
+---
+
+A decision-support tool for HR succession planning. Given a pool of candidates and a set of weighted criteria, it produces a defensible ranking of who should be considered as successor for a role.
+
+## What it does
+
+- **Structured ranking**: pairwise criteria weighting through **AHP** (Analytic Hierarchy Process), then candidate ranking through **TOPSIS**.
+- **Consistency checking**: AHP's consistency ratio flags when a decision-maker's pairwise judgements contradict one another, before those judgements reach a result.
+- **Scenario simulation**: an LLM layer explores variations, such as how the ranking shifts if a criterion is reweighted or a candidate's development gap were closed.
+
+## Why two methods rather than one model
+
+The classical methods do the deciding and the LLM does the explaining. AHP and TOPSIS are deterministic: the same inputs always produce the same ranking, and the arithmetic can be shown to a reviewer. That is a hard requirement for a decision affecting someone's career, since a ranking nobody can reproduce or audit is not usable in an HR process.
+
+The LLM never touches the score. It is used only to narrate scenarios around a ranking that has already been computed.

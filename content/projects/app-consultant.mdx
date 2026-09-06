@@ -1,0 +1,26 @@
+---
+title: 'App Consultant'
+summary: 'Chat interface that turns a conversation with a local LLM into a standards-compliant architecture document and PRD.'
+author: 'Daffa Akbar'
+publishedAt: '2026-08-12'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangGraph', 'vLLM', 'LiteLLM', 'Next.js', 'TypeScript']
+confidential: true
+category: 'internal'
+---
+
+**App Consultant** lets an engineer or analyst describe an application in plain conversation and walk away with `architecture.md` and `prd.md` already written to the company's internal standard.
+
+The problem it solves is consistency. Every new internal application needed the same two documents, and every team wrote them differently, which made architecture review an exercise in reformatting rather than reviewing.
+
+## What it does
+
+- **Conversational intake**: a guided chat draws out scope, constraints, integrations and non-functional requirements without the user filling in a form.
+- **Two generated artefacts**: a product requirements document and an architecture document, both following the internal template.
+- **Compliance by construction**: the templates encode the company's regulations, so a generated document starts compliant rather than being corrected into compliance.
+- **Local inference**: runs against self-hosted models, so nothing about an unreleased internal system leaves the network.
+
+## Approach
+
+The conversation is a LangGraph state machine rather than a single long prompt. Each stage collects one part of the specification and validates it before moving on, which keeps a long intake coherent and lets a user resume where they left off. Document assembly is a separate step from elicitation, so the template can change without touching the conversational logic.

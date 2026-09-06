@@ -1,0 +1,23 @@
+---
+title: 'Tuturaksara'
+summary: 'Speech-to-text pipeline that turns recorded meetings into structured minutes.'
+author: 'Daffa Akbar'
+publishedAt: '2026-04-20'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Speech-to-text', 'LangChain', 'vLLM', 'Node.js']
+confidential: true
+category: 'internal'
+---
+
+**Tuturaksara** converts recorded audio into text, and then into a finished document, most often the minutes of a meeting.
+
+## What it does
+
+- **Transcription**: audio in, timestamped text out.
+- **Templated output**: the transcript is rendered into a document structure such as minutes of meeting, rather than handed over as a raw wall of text.
+- **Feeds downstream tools**: its transcripts are one of the inputs to [Rewangit](/projects/rewangit), which covers the wider document-generation case.
+
+## Approach
+
+Transcription and document assembly are separate stages. Keeping them apart means the transcript remains a verifiable record of what was actually said, while the generated minutes are a derived artefact that can be regenerated or reformatted without re-running the audio.

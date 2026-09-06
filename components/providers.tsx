@@ -8,7 +8,8 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider
       enableSystem
       attribute='class'
-      defaultTheme='system'
+      // The design is composed dark-first; light is a considered alternate.
+      defaultTheme='dark'
       disableTransitionOnChange
     >
       {children}
@@ -22,7 +23,7 @@ function ToasterProvider() {
 
   return (
     <Toaster
-      position='top-right'
+      position='bottom-right'
       theme={resolvedTheme === 'dark' ? 'dark' : 'light'}
     />
   )

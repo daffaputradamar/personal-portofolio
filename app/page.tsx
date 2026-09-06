@@ -1,26 +1,25 @@
-import Experiences from '@/components/experiences'
-import Intro from '@/components/intro'
-import RecentPosts from '@/components/recent-posts'
-import RecentProjects from '@/components/recent-projects'
-import TechStack from '@/components/tech-stack'
-import { BackgroundBeams } from '@/components/ui/background-beams'
-import { TracingBeam } from '@/components/ui/tracing-beams'
+import { About } from '@/components/site/about'
+import { Background } from '@/components/site/background'
+import { ContactCta } from '@/components/site/contact-cta'
+import { Experience } from '@/components/site/experience'
+import { Hero } from '@/components/site/hero'
+import { Marquee } from '@/components/site/marquee'
+import { SelectedWork } from '@/components/site/selected-work'
+import { Stack } from '@/components/site/stack'
+import { Writing } from '@/components/site/writing'
 
 export default function Home() {
   return (
-    <section className='pb-24 pt-40'>
-      {/* <BackgroundBeams /> */}
-
-      <TracingBeam className='px-6'>
-        <div className='container max-w-3xl'>
-          <Intro />
-          <TechStack />
-          <Experiences />
-          <RecentPosts />
-          <RecentProjects />
-        </div>
-      </TracingBeam>
-
-    </section>
+    <>
+      <Hero />
+      <Marquee />
+      <About />
+      <Stack />
+      <Experience />
+      <Background />
+      <SelectedWork />
+      <Writing />
+      <ContactCta />
+    </>
   )
 }

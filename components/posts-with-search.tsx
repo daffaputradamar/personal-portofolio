@@ -1,48 +1,63 @@
 'use client'
 
-import { useState } from 'react'
-import { PostMetadata } from '@/lib/posts'
+import { useMemo, useState } from 'react'
 
-import Posts from '@/components/posts'
-import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
-import { Cross2Icon } from '@radix-ui/react-icons'
+import { PostMetadata } from '@/lib/posts'
+import { PostList } from '@/components/site/post-list'
 
 export default function PostsWithSearch({ posts }: { posts: PostMetadata[] }) {
   const [query, setQuery] = useState('')
-  const filtered = posts.filter(post =>
-    post.title?.toLowerCase().includes(query.toLowerCase())
-  )
 
-  const isFiltered = query.length > 0
-  function resetFilter() {
-    setQuery('')
-  }
+  const filtered = useMemo(() => {
+    const needle = query.trim().toLowerCase()
+    if (!needle) return posts
+    // Search titles and summaries — title-only felt too strict in practice.
+    return posts.filter(post =>
+      `${post.title ?? ''} ${post.summary ?? ''}`
+        .toLowerCase()
+        .includes(needle)
+    )
+  }, [posts, query])
 
   return (
     <div>
-      <div className='mb-12 flex items-center gap-3'>
-        <Input
-          type='text'
-          placeholder='Search posts...'
-          className='h-9 w-full sm:w-1/2'
+      <div className='rule flex items-center gap-3 py-4'>
+        <svg
+          aria-hidden
+          viewBox='0 0 24 24'
+          className='h-4 w-4 shrink-0 text-muted-foreground'
+          fill='none'
+          stroke='currentColor'
+          strokeWidth='1.5'
+        >
+          <circle cx='11' cy='11' r='7' />
+          <path d='m16.5 16.5 4 4' strokeLinecap='round' />
+        </svg>
+
+        <input
+          type='search'
           value={query}
-          onChange={e => setQuery(e.target.value)}
+          onChange={event => setQuery(event.target.value)}
+          placeholder='Search posts'
+          aria-label='Search posts'
+          className='w-full border-0 bg-transparent p-0 text-sm placeholder:text-muted-foreground focus:outline-none'
         />
-        {isFiltered && (
-          <Button
-            size='sm'
-            variant='secondary'
-            onClick={resetFilter}
-            className='h-8 px-2 lg:px-3'
-          >
-            Reset
-            <Cross2Icon className='ml-2 h-4 w-4' />
-          </Button>
-        )}
+
+        <span className='eyebrow shrink-0'>
+          {filtered.length}/{posts.length}
+        </span>
       </div>
 
-      <Posts posts={filtered} />
+      <div className='mt-2'>
+        {filtered.length === 0 ? (
+          <p className='py-16 text-center text-sm text-muted-foreground'>
+            No posts match{' '}
+            <span className='text-foreground'>&ldquo;{query}&rdquo;</span>.
+          </p>
+        ) : (
+          <PostList posts={filtered} />
+        )}
+      </div>
     </div>
   )
 }

@@ -1,0 +1,23 @@
+---
+title: 'Rewangit'
+summary: 'Document generator that turns meeting transcripts into finished documents in the company house style.'
+author: 'Daffa Akbar'
+publishedAt: '2026-07-15'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangChain', 'vLLM', 'LiteLLM', 'Node.js']
+confidential: true
+category: 'internal'
+---
+
+**Rewangit** generates documents that follow the company's standard, taking a meeting transcript as its raw material, either produced by [Tuturaksara](/projects/tuturaksara) or supplied directly by the user.
+
+## What it does
+
+- **Transcript to document**: takes an unstructured conversation and produces a document in the required internal format.
+- **Multiple sources**: accepts output from the transcription pipeline, or a transcript the user already holds.
+- **House style enforced**: structure, headings and mandatory sections come from the company template rather than from whatever the model produces unprompted.
+
+## Approach
+
+The generation step is deliberately constrained. Rather than asking a model to "write the document", the pipeline extracts the required fields from the transcript first, then renders them into the template. That separation means an incomplete transcript produces a document with visible gaps instead of plausible-sounding invention, which matters when the output becomes an internal record.

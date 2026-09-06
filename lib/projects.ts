@@ -17,6 +17,16 @@ export type ProjectMetadata = {
   publishedAt?: string
   slug: string
   link?: string
+  /** No public link or screenshots — the system is not publicly reachable. */
+  confidential?: boolean
+  /** 'internal' marks in-house employer work; anything else is client work. */
+  category?: 'internal' | 'client'
+  /** Organisation the work was done for. */
+  company?: string
+  /** Role held on the project. */
+  role?: string
+  /** Key technologies, shown as chips. */
+  tech?: string[]
 }
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
@@ -28,6 +38,18 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
   } catch (error) {
     return null
   }
+}
+
+/** In-house work built as an employee, newest first. */
+export async function getInternalProjects(): Promise<ProjectMetadata[]> {
+  const projects = await getProjects()
+  return projects.filter(project => project.category === 'internal')
+}
+
+/** Freelance client and personal work, newest first. */
+export async function getClientProjects(): Promise<ProjectMetadata[]> {
+  const projects = await getProjects()
+  return projects.filter(project => project.category !== 'internal')
 }
 
 export async function getProjects(limit?: number): Promise<ProjectMetadata[]> {

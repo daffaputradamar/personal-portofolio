@@ -1,0 +1,23 @@
+---
+title: 'Wicara'
+summary: 'Voice-based learning tool built on Gemini Live, where the learner practises by speaking through realistic scenarios.'
+author: 'Daffa Akbar'
+publishedAt: '2026-05-18'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Gemini Live', 'Realtime audio', 'Next.js', 'TypeScript']
+confidential: true
+category: 'internal'
+---
+
+**Wicara** is a spoken-practice tool. Instead of drilling vocabulary, the learner talks their way through a scenario, and the other side of the conversation talks back, live.
+
+## What it does
+
+- **Real-time speech**: full duplex voice conversation built on the Gemini Live API, so the exchange runs at conversational latency rather than record-then-wait.
+- **Scenario-driven**: each session places the learner in a defined situation with a role to play, rather than an open-ended chat.
+- **Voice first**: practising the act of speaking is the point, so the interaction is designed around audio rather than text.
+
+## Approach
+
+The engineering constraint here is the latency budget, not model quality. A spoken exchange falls apart if the reply lands late, so the audio path is streamed end to end, with capture, transport and playback all incremental, and session state kept small enough that turn-taking stays responsive.

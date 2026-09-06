@@ -1,0 +1,25 @@
+---
+title: 'sDMS — Smart Dealer Management System'
+summary: 'End-to-end dealer management platform covering distribution, sales and after-sales, used across the dealer network.'
+author: 'Daffa Akbar'
+publishedAt: '2023-06-01'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'Senior IT Application Developer'
+tech: ['Node.js', '.NET', 'Microservices', 'Apache Kafka', 'SQL Server', 'Docker']
+confidential: true
+category: 'internal'
+---
+
+**sDMS (Smart Dealer Management System)** runs the end-to-end dealer process: distribution through to sales, and on into after-sales service. It is used widely across the dealer network.
+
+## Scope
+
+- **Distribution**: movement of units through the supply chain to the dealer.
+- **Sales**: the full sales process at the dealer.
+- **After-sales**: service and the continuing customer relationship past the point of purchase.
+
+## Engineering
+
+The system was built as **microservices** in Node.js and .NET, replacing monolithic solutions so that individual parts of the dealer process could be deployed independently. Services communicate over **Apache Kafka**, which lets distribution, sales and after-sales stay decoupled while still reacting to each other's events. Delivery is containerised with Docker and runs through CI/CD.
+
+Architecture on a system this wide is as much coordination as code. Each new module went through design with system analysts and stakeholders before implementation, to keep it aligned with how the business actually runs the dealer process.

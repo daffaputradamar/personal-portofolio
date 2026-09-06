@@ -1,0 +1,23 @@
+---
+title: 'OCR with LLM'
+summary: 'Document extraction that returns strictly typed JSON, using managed templates to constrain model output.'
+author: 'Daffa Akbar'
+publishedAt: '2026-02-10'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['vLLM', 'LiteLLM', 'JSON Schema', 'Python']
+confidential: true
+category: 'internal'
+---
+
+A document-extraction service that reads scanned and photographed documents and returns **fixed-shape JSON**: the same keys and the same types on every call, so downstream systems can consume it without defensive parsing.
+
+## What it does
+
+- **Managed templates**: each document type has a registered template defining exactly which fields to extract and what type each one is.
+- **Guaranteed shape**: output conforms to the template's schema, and a missing field comes back as an explicit null rather than being omitted or invented.
+- **Real-world input**: handles the scans, photographs and re-prints that arrive in practice, not only clean PDFs.
+
+## Approach
+
+Free-form model output is unusable as an integration contract. The failure mode is a field that quietly changes name or nests one level deeper, breaking a consumer in production. Constraining generation to a registered schema turns extraction into something an ordinary service can depend on, and makes a bad extraction surface as a validation failure instead of a silently wrong value.

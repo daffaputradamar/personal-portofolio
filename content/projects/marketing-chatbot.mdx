@@ -1,0 +1,33 @@
+---
+title: 'Marketing Chatbot'
+summary: 'RAG assistant grounded in the enterprise data warehouse and external news, with agentic tool use over self-hosted models.'
+author: 'Daffa Akbar'
+publishedAt: '2026-03-15'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['RAG', 'LangChain', 'LangGraph', 'MCP', 'vLLM', 'LiteLLM', 'Data warehouse']
+confidential: true
+category: 'internal'
+---
+
+An internal assistant that answers business questions in natural language, grounded in two sources: the **enterprise data warehouse** and **external news**. It runs entirely on self-hosted models, so commercial data never leaves the network.
+
+## What it does
+
+- **Warehouse-grounded answers**: operational data becomes queryable in natural language, so a marketing question no longer requires a SQL request ticket.
+- **External context**: news sources sit alongside internal figures, so market movements can be read next to the company's own numbers.
+- **Cited responses**: every answer reports which source it came from, so a reader can tell an internal figure from an outside claim.
+
+## Retrieval
+
+The **RAG** layer is split by source type, because the two sources behave nothing alike. News is unstructured and is retrieved semantically: chunked, embedded, and searched by vector similarity with the retrieved passages carried into the prompt as context. Warehouse data is structured and authoritative, so semantic search is the wrong instrument entirely. There, the retrieval step generates a query against the warehouse schema, validates it before execution, and grounds the answer in the returned rows.
+
+Mixing the two would be the obvious mistake. Embedding a fact table and retrieving rows by cosine similarity produces answers that sound right and total wrong, and an aggregate figure has to be computed rather than recalled.
+
+## Agent and tools
+
+**LangChain** supplies the retrieval and prompting components; **LangGraph** runs the control flow on top as an explicit state graph. A question is planned, routed to the sources it actually needs, and only then answered, with the graph free to loop when a first retrieval comes back thin.
+
+Each capability is exposed to the model as a **tool** with a typed signature rather than being hard-wired into a prompt chain: warehouse query, news search, and the metric lookups in between. That keeps the model's options enumerable and each call individually validated and logged.
+
+Those tools are served over **MCP**, so the same warehouse and news capabilities are defined once and reused by other internal assistants instead of being reimplemented per application. Adding a source to the MCP server makes it available to every client without redeploying any of them.
