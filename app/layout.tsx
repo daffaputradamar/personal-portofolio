@@ -1,34 +1,44 @@
 import type { Metadata, Viewport } from 'next'
-import { Inter, Instrument_Serif, JetBrains_Mono } from 'next/font/google'
+import {
+  IBM_Plex_Mono,
+  IBM_Plex_Sans,
+  IBM_Plex_Sans_Condensed
+} from 'next/font/google'
 
 import { cn } from '@/lib/utils'
 import { profile } from '@/lib/resume'
 
+import 'lenis/dist/lenis.css'
 import './globals.css'
 import Providers from '@/components/providers'
 import { Nav } from '@/components/site/nav'
 import { SiteFooter } from '@/components/site/site-footer'
 import { Grain } from '@/components/site/grain'
-import { Spotlight } from '@/components/site/spotlight'
 import { ScrollProgress } from '@/components/site/scroll-progress'
+import { SmoothScroll } from '@/components/site/smooth-scroll'
 
-const sans = Inter({
+// IBM Plex was cut for engineering documentation, so the whole superfamily
+// carries the datasheet register the site is built around.
+const sans = IBM_Plex_Sans({
   subsets: ['latin'],
+  weight: ['400', '500', '600'],
   variable: '--font-sans',
   display: 'swap'
 })
 
-// Editorial display face — high contrast, tight fit at large sizes.
-const display = Instrument_Serif({
+// Display sizes: condensed rather than a display serif, which is the pairing
+// every generated portfolio ships with.
+const display = IBM_Plex_Sans_Condensed({
   subsets: ['latin'],
-  weight: '400',
+  weight: ['600', '700'],
   variable: '--font-display',
   display: 'swap'
 })
 
-// Carries every eyebrow, label and metadatum on the site.
-const mono = JetBrains_Mono({
+// Carries every field label, index and figure on the site.
+const mono = IBM_Plex_Mono({
   subsets: ['latin'],
+  weight: ['400', '500'],
   variable: '--font-mono',
   display: 'swap'
 })
@@ -90,6 +100,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en' suppressHydrationWarning>
+      <head>
+        {/* Reveal animations hide content until GSAP runs; without JS, show it. */}
+        <noscript>
+          <style>{`.gsap-reveal,.gsap-split{visibility:visible!important}`}</style>
+        </noscript>
+      </head>
       <body
         className={cn(
           'flex min-h-screen flex-col font-sans antialiased',
@@ -101,13 +117,13 @@ export default function RootLayout({
         <Providers>
           <a
             href='#main'
-            className='sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[80] focus:rounded-full focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:text-background'
+            className='focus:bg-foreground focus:text-background sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[80] focus:px-4 focus:py-2 focus:text-sm'
           >
             Skip to content
           </a>
 
+          <SmoothScroll />
           <ScrollProgress />
-          <Spotlight />
           <Nav />
 
           <main id='main' className='relative z-10 grow'>

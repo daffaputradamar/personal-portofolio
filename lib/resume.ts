@@ -9,6 +9,7 @@ export const profile = {
   name: 'Daffa Akbar',
   firstName: 'Daffa',
   role: 'AI Engineer',
+  initial: 'DA',
   discipline: 'Software Engineer',
   company: 'PT. Mitra Pinasthika Mulia',
   /** The hero paragraph. One plain sentence, drawn from the CV summary. */
@@ -21,6 +22,8 @@ export const profile = {
   ],
   location: 'Surabaya, Indonesia',
   timezone: 'GMT+7',
+  /** IANA zone behind the live clock in the hero title block. */
+  timezoneId: 'Asia/Jakarta',
   availability: {
     open: true,
     label: 'Open to new roles'
@@ -110,7 +113,14 @@ export const experiences: Experience[] = [
       'Introduced containerisation with Docker for scalable deployments and CI/CD, reducing resource cost and provisioning time.',
       'Mentored other developers and advocated for developer-tool adoption (GitHub Copilot, Google Gemini, Ollama) to accelerate code quality and productivity.'
     ],
-    stack: ['Node.js', '.NET', 'Microservices', 'Docker', 'Apache Kafka', 'SQL Server']
+    stack: [
+      'Node.js',
+      '.NET',
+      'Microservices',
+      'Docker',
+      'Apache Kafka',
+      'SQL Server'
+    ]
   },
   {
     role: 'Web Developer',

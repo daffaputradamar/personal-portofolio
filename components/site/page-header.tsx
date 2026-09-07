@@ -16,8 +16,8 @@ export function PageHeader({ eyebrow, title, lede, aside }: PageHeaderProps) {
   return (
     <header className='container pt-32 pb-14 md:pt-40 md:pb-20'>
       <Reveal offset={12}>
-        <div className='mb-5 h-px w-24 bg-linear-to-r from-accent-1 to-transparent' />
-        <p className='eyebrow text-accent-1'>{eyebrow}</p>
+        <div className='tick-rule mb-5 w-40' />
+        <p className='eyebrow text-signal'>{eyebrow}</p>
       </Reveal>
 
       <div className='mt-6 grid gap-8 md:grid-cols-12 md:items-end'>

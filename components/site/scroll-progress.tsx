@@ -1,21 +1,40 @@
 'use client'
 
-import { motion, useScroll, useSpring } from 'motion/react'
+import { useRef } from 'react'
+
+import { gsap, useGSAP } from '@/lib/gsap'
 
 /** Hairline progress bar pinned to the very top of the viewport. */
 export function ScrollProgress() {
-  const { scrollYProgress } = useScroll()
-  const scaleX = useSpring(scrollYProgress, {
-    stiffness: 160,
-    damping: 30,
-    restDelta: 0.001
-  })
+  const ref = useRef<HTMLDivElement>(null)
+
+  useGSAP(
+    () => {
+      if (!ref.current) return
+      gsap.fromTo(
+        ref.current,
+        { scaleX: 0 },
+        {
+          scaleX: 1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: document.documentElement,
+            start: 0,
+            end: 'max',
+            scrub: 0.5
+          }
+        }
+      )
+    },
+    { scope: ref }
+  )
 
   return (
-    <motion.div
+    <div
+      ref={ref}
       aria-hidden
-      className='fixed inset-x-0 top-0 z-[70] h-0.5 origin-left bg-accent-1'
-      style={{ scaleX }}
+      className='bg-signal fixed inset-x-0 top-0 z-70 h-0.5 origin-left'
+      style={{ transform: 'scaleX(0)' }}
     />
   )
 }

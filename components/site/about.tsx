@@ -2,10 +2,8 @@ import Image from 'next/image'
 
 import authorImage from '@/public/images/authors/me.jpg'
 import { capabilities, profile } from '@/lib/resume'
-
-/** One hue per capability block. */
-const TONE_TEXT = ['text-accent-3', 'text-accent-4', 'text-accent-2']
-const TONE_DOT = ['bg-accent-3', 'bg-accent-4', 'bg-accent-2']
+import { Field } from './field'
+import { Parallax } from './parallax'
 import { Reveal } from './reveal'
 import { Section } from './section'
 
@@ -13,45 +11,49 @@ export function About() {
   return (
     <Section
       id='about'
-      index='01'
-      tone={1}
+      index='02'
       label='About'
-      title='Software engineer working on applied AI and web platforms.'
+      title='Engineering, from backend to AI'
+      lede='Five years of backend and platform work, now pointed at applied AI.'
     >
       <div className='grid gap-12 lg:grid-cols-12 lg:gap-10'>
-        {/* Bio */}
         <div className='lg:col-span-7'>
-          <div className='space-y-6'>
-            {profile.bio.map((paragraph, i) => (
-              <Reveal key={i} delay={i * 0.08}>
-                <p className='text-base leading-relaxed text-muted-foreground'>
+          <div className='space-y-5'>
+            {[
+              'I’m an AI engineer at MPM in Surabaya, building internal AI platforms and applications.',
+              'Previously, I spent four and a half years modernising backend systems. I’ve also built freelance web applications since 2020.'
+            ].map((paragraph, i) => (
+              <Reveal key={i} delay={i * 0.06}>
+                <p className='text-muted-foreground text-sm leading-relaxed'>
                   {paragraph}
                 </p>
               </Reveal>
             ))}
           </div>
 
-          {/* Capability blocks */}
-          <div className='mt-14 space-y-0'>
+          {/* Capabilities, always visible */}
+          <div className='border-line mt-12 border-t'>
             {capabilities.map((capability, i) => (
-              <Reveal key={capability.title} delay={i * 0.08}>
-                <div className='rule grid gap-4 py-7 sm:grid-cols-12'>
-                  <h3
-                    className={`display flex items-center gap-2.5 text-xl sm:col-span-4 ${TONE_TEXT[i % TONE_TEXT.length]}`}
-                  >
-                    <span
-                      aria-hidden
-                      className={`h-1.5 w-1.5 shrink-0 rounded-full ${TONE_DOT[i % TONE_DOT.length]}`}
-                    />
-                    {capability.title}
-                  </h3>
+              <Reveal key={capability.title} delay={i * 0.06}>
+                <div className='border-line grid gap-3 border-b py-6 sm:grid-cols-12 sm:gap-6'>
+                  <div className='sm:col-span-4'>
+                    <div className='flex items-baseline gap-2.5'>
+                      <span className='eyebrow text-signal'>
+                        {String(i + 1).padStart(2, '0')}
+                      </span>
+                      <h3 className='display text-xl'>{capability.title}</h3>
+                    </div>
+                  </div>
                   <div className='sm:col-span-8'>
-                    <p className='text-sm leading-relaxed text-muted-foreground'>
+                    <p className='text-muted-foreground text-sm leading-relaxed'>
                       {capability.body}
                     </p>
-                    <ul className='mt-4 flex flex-wrap gap-x-4 gap-y-2'>
+                    <ul className='mt-3 flex flex-wrap gap-x-3 gap-y-1'>
                       {capability.items.map(item => (
-                        <li key={item} className='eyebrow text-foreground/60'>
+                        <li
+                          key={item}
+                          className='text-foreground/55 font-mono text-xs'
+                        >
                           {item}
                         </li>
                       ))}
@@ -63,41 +65,25 @@ export function About() {
           </div>
         </div>
 
-        {/* Portrait + facts */}
-        <div className='lg:col-span-5 lg:pl-10'>
+        <div className='lg:col-span-5 lg:pl-8'>
           <Reveal delay={0.1}>
-            <div className='relative aspect-4/5 w-full overflow-hidden rounded-sm bg-surface'>
+            <Parallax className='bg-surface aspect-4/5 w-full' speed={0.1}>
               <Image
                 src={authorImage}
                 alt={`Portrait of ${profile.name}`}
                 fill
                 sizes='(min-width: 1024px) 32rem, 100vw'
-                className='object-cover grayscale transition-[filter,transform] duration-900 ease-editorial hover:scale-[1.03] hover:grayscale-0'
+                className='object-cover grayscale transition-[filter] duration-700 hover:grayscale-0'
               />
-            </div>
+            </Parallax>
           </Reveal>
 
           <Reveal delay={0.18}>
-            <dl className='mt-8'>
-              {[
-                { term: 'Based in', detail: profile.location },
-                { term: 'Timezone', detail: profile.timezone },
-                { term: 'Focus', detail: 'Applied AI, web platforms' },
-                {
-                  term: 'Working style',
-                  detail: 'Remote, async-friendly'
-                }
-              ].map(fact => (
-                <div
-                  key={fact.term}
-                  className='rule flex items-baseline justify-between gap-4 py-3.5'
-                >
-                  <dt className='eyebrow'>{fact.term}</dt>
-                  <dd className='text-right text-sm text-foreground'>
-                    {fact.detail}
-                  </dd>
-                </div>
-              ))}
+            <dl className='border-line mt-8 border-t'>
+              <Field label='Based in'>{profile.location}</Field>
+              <Field label='Timezone'>{profile.timezone}</Field>
+              <Field label='Focus'>Applied AI, web platforms</Field>
+              <Field label='Working'>Remote, async-friendly</Field>
             </dl>
           </Reveal>
         </div>

@@ -1,73 +1,83 @@
 'use client'
 
-import { motion, useReducedMotion } from 'motion/react'
+import { useRef } from 'react'
 
 import { cn } from '@/lib/utils'
+import { EASE, MOTION_OK, SplitText, gsap, useGSAP } from '@/lib/gsap'
 
 type TextRevealProps = {
   text: string
   className?: string
-  /** Seconds before the first word moves. */
+  /** Seconds before the first line moves. */
   delay?: number
   /** Seconds between consecutive words. */
   stagger?: number
-  /** Skip the viewport gate and play immediately — use for above-the-fold. */
+  /** Play on mount instead of waiting for the viewport — for above the fold. */
   immediate?: boolean
+  /** Render as a block so the parent's `text-wrap: balance` still applies. */
+  block?: boolean
 }
 
 /**
- * Word-by-word mask reveal: each word sits in an overflow-hidden box and slides
- * up from below the baseline. Every word keeps its trailing space inside the
- * clipping box so wrapping and word spacing match plain text.
+ * Line-masked word reveal. SplitText wraps each line in a clipping mask and
+ * the words rise up through it. `autoSplit` re-splits after fonts load and on
+ * resize, so wrapping is always measured against the real typeface.
  */
 export function TextReveal({
   text,
   className,
   delay = 0,
-  stagger = 0.055,
-  immediate = false
+  stagger = 0.05,
+  immediate = false,
+  block = false
 }: TextRevealProps) {
-  const reduced = useReducedMotion()
-  const words = text.split(' ')
+  const ref = useRef<HTMLSpanElement>(null)
 
-  if (reduced) {
-    return <span className={className}>{text}</span>
-  }
+  useGSAP(
+    () => {
+      const el = ref.current
+      if (!el) return
 
-  const animation = {
-    hidden: { y: '110%' },
-    visible: { y: '0%' }
-  }
+      const mm = gsap.matchMedia()
+      mm.add(MOTION_OK, () => {
+        const split = SplitText.create(el, {
+          type: 'lines,words',
+          mask: 'lines',
+          autoSplit: true,
+          linesClass: 'split-line',
+          wordsClass: 'split-word',
+          onSplit(self) {
+            // Words start below their mask, so the wrapper can become visible
+            // the instant the split exists without any flash of unstyled text.
+            gsap.set(el, { autoAlpha: 1 })
+            return gsap.from(self.words, {
+              yPercent: 115,
+              duration: 1.2,
+              ease: EASE,
+              stagger,
+              delay,
+              scrollTrigger: immediate
+                ? undefined
+                : { trigger: el, start: 'top 90%', once: true }
+            })
+          }
+        })
+        return () => split.revert()
+      })
+    },
+    { scope: ref, dependencies: [text] }
+  )
 
   return (
-    <motion.span
-      className={cn('inline', className)}
-      initial='hidden'
-      {...(immediate
-        ? { animate: 'visible' }
-        : {
-            whileInView: 'visible',
-            viewport: { once: true, margin: '-10% 0px' }
-          })}
-      transition={{ staggerChildren: stagger, delayChildren: delay }}
-      aria-label={text}
+    <span
+      ref={ref}
+      className={cn(
+        'gsap-split max-w-full',
+        block ? 'block' : 'inline-block',
+        className
+      )}
     >
-      {words.map((word, i) => (
-        <span
-          key={`${word}-${i}`}
-          className='inline-block overflow-hidden align-bottom pb-[0.12em]'
-          aria-hidden
-        >
-          <motion.span
-            className='inline-block'
-            variants={animation}
-            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-          >
-            {word}
-            {i < words.length - 1 ? '\u00A0' : ''}
-          </motion.span>
-        </span>
-      ))}
-    </motion.span>
+      {text}
+    </span>
   )
 }

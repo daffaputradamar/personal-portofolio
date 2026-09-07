@@ -14,7 +14,7 @@ export function ThemeToggle() {
     <button
       type='button'
       onClick={() => setTheme(resolvedTheme === 'dark' ? 'light' : 'dark')}
-      className='inline-flex h-10 w-10 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-foreground/5 hover:text-foreground'
+      className='text-muted-foreground hover:bg-surface hover:text-foreground inline-flex h-10 w-10 items-center justify-center transition-colors'
     >
       {/* Light theme: offer the moon. */}
       <svg

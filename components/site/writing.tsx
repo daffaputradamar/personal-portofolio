@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 
 import { getPosts } from '@/lib/posts'
 import { PostList } from './post-list'
@@ -7,34 +8,26 @@ import { Section } from './section'
 
 export async function Writing() {
   const posts = await getPosts(3)
+  const all = await getPosts()
 
   return (
     <Section
       id='writing'
       index='06'
-      tone={5}
       label='Writing'
-      title='Recent posts.'
+      title='Recent posts'
       lede='Notes on the tools and stacks I use day to day.'
+      meta={`${all.length} total`}
     >
       <PostList posts={posts} />
 
-      <Reveal delay={0.1}>
+      <Reveal delay={0.08}>
         <Link
           href='/posts'
-          className='group mt-10 inline-flex items-center gap-3 text-sm text-muted-foreground transition-colors hover:text-foreground'
+          className='link-underline mt-8 inline-flex items-center gap-2 text-sm'
         >
-          <span className='link-underline'>All posts</span>
-          <svg
-            aria-hidden
-            viewBox='0 0 24 24'
-            className='h-4 w-4 transition-transform duration-500 group-hover:translate-x-1'
-            fill='none'
-            stroke='currentColor'
-            strokeWidth='1.5'
-          >
-            <path d='M5 12h14M13 6l6 6-6 6' strokeLinecap='round' />
-          </svg>
+          All posts
+          <ArrowUpRight aria-hidden className='h-4 w-4' />
         </Link>
       </Reveal>
     </Section>

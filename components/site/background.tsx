@@ -1,4 +1,5 @@
 import { achievements, education, languages } from '@/lib/resume'
+import { Field } from './field'
 import { Reveal } from './reveal'
 import { Section } from './section'
 
@@ -7,36 +8,43 @@ export function Background() {
   return (
     <Section
       id='background'
-      index='04'
-      tone={5}
+      index='05'
       label='Background'
-      title='Education and achievements.'
+      title='Education and achievements'
     >
       <div className='grid gap-12 lg:grid-cols-12 lg:gap-10'>
         <div className='lg:col-span-7'>
           <Reveal>
             <h3 className='eyebrow text-foreground'>Education</h3>
-            {education.map(item => (
-              <div key={item.qualification} className='rule mt-4 pt-5'>
-                <p className='display text-2xl'>{item.qualification}</p>
-                <p className='mt-1.5 text-sm text-foreground'>
-                  {item.institution}
-                </p>
-                <p className='mt-1 text-sm text-muted-foreground'>
-                  {item.period}
-                  {item.note ? ` · ${item.note}` : ''}
-                </p>
-              </div>
-            ))}
+            <div className='border-line mt-3 border-t'>
+              {education.map(item => (
+                <div
+                  key={item.qualification}
+                  className='border-line border-b py-5'
+                >
+                  <p className='display text-2xl'>{item.qualification}</p>
+                  <p className='mt-1.5 text-sm'>{item.institution}</p>
+                  <p className='text-muted-foreground mt-1 font-mono text-xs'>
+                    {item.period}
+                    {item.note ? ` · ${item.note}` : ''}
+                  </p>
+                </div>
+              ))}
+            </div>
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <h3 className='eyebrow mt-12 text-foreground'>Key achievements</h3>
-            <ul className='mt-4'>
-              {achievements.map(item => (
-                <li key={item.title} className='rule py-5'>
-                  <p className='display text-2xl'>{item.title}</p>
-                  <p className='mt-2 max-w-xl text-sm leading-relaxed text-muted-foreground'>
+          <Reveal delay={0.08}>
+            <h3 className='eyebrow text-foreground mt-11'>Key achievements</h3>
+            <ul className='border-line mt-3 border-t'>
+              {achievements.map((item, i) => (
+                <li key={item.title} className='border-line border-b py-5'>
+                  <div className='flex items-baseline gap-2.5'>
+                    <span className='eyebrow text-signal'>
+                      {String(i + 1).padStart(2, '0')}
+                    </span>
+                    <p className='display text-xl'>{item.title}</p>
+                  </div>
+                  <p className='text-muted-foreground mt-2 max-w-xl text-sm leading-relaxed'>
                     {item.body}
                   </p>
                 </li>
@@ -45,18 +53,14 @@ export function Background() {
           </Reveal>
         </div>
 
-        <div className='lg:col-span-5 lg:pl-10'>
-          <Reveal delay={0.16}>
+        <div className='lg:col-span-5 lg:pl-8'>
+          <Reveal delay={0.14}>
             <h3 className='eyebrow text-foreground'>Languages</h3>
-            <dl className='mt-4'>
+            <dl className='border-line mt-3 border-t'>
               {languages.map(language => (
-                <div
-                  key={language.name}
-                  className='rule flex items-baseline justify-between gap-4 py-3.5'
-                >
-                  <dt className='text-sm text-foreground'>{language.name}</dt>
-                  <dd className='eyebrow'>{language.level}</dd>
-                </div>
+                <Field key={language.name} label={language.name}>
+                  {language.level}
+                </Field>
               ))}
             </dl>
           </Reveal>

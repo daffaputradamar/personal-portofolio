@@ -29,7 +29,7 @@
   }
 }
 
-/* Hairline rule used to separate editorial sections. */
+/** Hairline separator. */
 @utility rule {
   border-top: 1px solid hsl(var(--line));
 }
@@ -39,13 +39,14 @@
    ------------------------------------------------------------------ */
 
 @theme {
-  --font-sans:
-    var(--font-sans), ui-sans-serif, system-ui, -apple-system, sans-serif,
-    'Apple Color Emoji', 'Segoe UI Emoji';
-  --font-display:
-    var(--font-display), ui-serif, Georgia, Cambria, 'Times New Roman', serif;
-  --font-mono:
-    var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  /* IBM Plex: a superfamily built for engineering documentation, which is
+     exactly the register this site is going for. */
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
+    sans-serif;
+  --font-display: var(--font-display), var(--font-sans), ui-sans-serif,
+    system-ui, sans-serif;
+  --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
+    monospace;
 
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
@@ -66,70 +67,60 @@
   --color-accent-foreground: hsl(var(--accent-foreground));
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
-  --color-popover: hsl(var(--popover));
-  --color-popover-foreground: hsl(var(--popover-foreground));
   --color-destructive: hsl(var(--destructive));
   --color-destructive-foreground: hsl(var(--destructive-foreground));
 
-  /* Accent ramp. One hue per section, so colour marks structure rather than
-     decorating at random. Use for indices, icons, glows and chips - never for
-     body copy. */
-  --color-accent-1: hsl(var(--accent-1));
-  --color-accent-2: hsl(var(--accent-2));
-  --color-accent-3: hsl(var(--accent-3));
-  --color-accent-4: hsl(var(--accent-4));
-  --color-accent-5: hsl(var(--accent-5));
+  /* One signal colour, not a ramp. The five old names are kept so pages not
+     yet rebuilt keep compiling — they all resolve to the same hue, which is
+     what collapses the previous rainbow into a single accent. */
+  --color-signal: hsl(var(--signal));
+  --color-accent-1: hsl(var(--signal));
+  --color-accent-2: hsl(var(--signal));
+  --color-accent-3: hsl(var(--signal));
+  --color-accent-4: hsl(var(--signal));
+  --color-accent-5: hsl(var(--signal));
 
-  /* Editorial type scale — fluid, tuned for the display serif. */
-  --text-hero: clamp(3.25rem, 13vw, 12rem);
-  --text-hero--line-height: 0.86;
-  --text-hero--letter-spacing: -0.035em;
+  /* Reading sizes, one step up from the Tailwind defaults with looser leading. */
+  --text-xs: 0.8125rem;
+  --text-xs--line-height: 1.6;
+  --text-sm: 0.9375rem;
+  --text-sm--line-height: 1.65;
+  --text-base: 1rem;
+  --text-base--line-height: 1.7;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.6;
 
-  --text-display: clamp(2.5rem, 7vw, 5.5rem);
-  --text-display--line-height: 0.94;
-  --text-display--letter-spacing: -0.03em;
+  /* Display scale — condensed grotesque, set tight and often uppercase. */
+  --text-hero: clamp(2.75rem, 8.5vw, 7.5rem);
+  --text-hero--line-height: 0.92;
+  --text-hero--letter-spacing: -0.02em;
 
-  --text-headline: clamp(1.875rem, 4vw, 3.25rem);
-  --text-headline--line-height: 1.02;
-  --text-headline--letter-spacing: -0.025em;
+  --text-display: clamp(2.25rem, 5.5vw, 4.5rem);
+  --text-display--line-height: 0.96;
+  --text-display--letter-spacing: -0.015em;
 
-  --text-lead: clamp(1.0625rem, 1.6vw, 1.375rem);
+  --text-headline: clamp(1.75rem, 3.4vw, 2.75rem);
+  --text-headline--line-height: 1.05;
+  --text-headline--letter-spacing: -0.01em;
+
+  --text-lead: clamp(1.0625rem, 1.5vw, 1.25rem);
   --text-lead--line-height: 1.6;
 
-  --text-label: 0.6875rem;
-  --text-label--line-height: 1;
-  --text-label--letter-spacing: 0.18em;
+  /* Mono is already wide, so labels need far less tracking than a sans would. */
+  --text-label: 0.75rem;
+  --text-label--line-height: 1.5;
+  --text-label--letter-spacing: 0.09em;
 
-  --radius: 0.75rem;
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) - 3px);
-  --radius-sm: calc(var(--radius) - 6px);
+  /* A datasheet has no rounded corners. */
+  --radius: 0px;
+  --radius-lg: 0px;
+  --radius-md: 0px;
+  --radius-sm: 0px;
 
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 
-  --animate-marquee: marquee 48s linear infinite;
-  --animate-spin-slow: spin-slow 22s linear infinite;
   --animate-pulse-dot: pulse-dot 2.4s ease-in-out infinite;
-  --animate-float-a: float-a 20s ease-in-out infinite;
-  --animate-float-b: float-b 26s ease-in-out infinite;
-  --animate-float-c: float-c 23s ease-in-out infinite;
 
-  @keyframes marquee {
-    from {
-      transform: translate3d(0, 0, 0);
-    }
-    to {
-      transform: translate3d(-50%, 0, 0);
-    }
-  }
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
   @keyframes pulse-dot {
     0%,
     100% {
@@ -137,110 +128,71 @@
       transform: scale(1);
     }
     50% {
-      opacity: 0.45;
-      transform: scale(0.82);
-    }
-  }
-  @keyframes float-a {
-    0%,
-    100% {
-      transform: translate3d(0, 0, 0) scale(1);
-    }
-    50% {
-      transform: translate3d(6%, -8%, 0) scale(1.15);
-    }
-  }
-  @keyframes float-b {
-    0%,
-    100% {
-      transform: translate3d(0, 0, 0) scale(1.1);
-    }
-    50% {
-      transform: translate3d(-8%, 6%, 0) scale(0.95);
-    }
-  }
-  @keyframes float-c {
-    0%,
-    100% {
-      transform: translate3d(0, 0, 0) scale(0.95);
-    }
-    50% {
-      transform: translate3d(5%, 9%, 0) scale(1.2);
+      opacity: 0.4;
+      transform: scale(0.8);
     }
   }
 }
 
 /* ------------------------------------------------------------------
-   Palettes
+   Palettes — ink on paper, one signal colour
    ------------------------------------------------------------------ */
 
 @layer base {
-  /* Light — warm paper, ink, deep emerald accent. */
   :root {
-    --background: 40 22% 97%;
-    --foreground: 30 8% 10%;
-    --surface: 40 18% 94%;
+    --background: 40 14% 96%;
+    --foreground: 30 6% 12%;
+    --surface: 40 10% 92%;
     --elevated: 0 0% 100%;
-    --line: 32 10% 84%;
-    --border: 32 10% 84%;
-    --input: 32 10% 80%;
-    --ring: 156 62% 32%;
+    --line: 35 8% 80%;
+    --border: 35 8% 80%;
+    --input: 35 8% 74%;
+    --ring: 24 88% 45%;
 
-    --primary: 156 62% 30%;
-    --primary-foreground: 40 22% 97%;
-    --secondary: 40 14% 90%;
-    --secondary-foreground: 30 8% 14%;
-    --muted: 40 14% 90%;
-    --muted-foreground: 32 6% 42%;
-    --accent: 40 16% 91%;
-    --accent-foreground: 30 8% 14%;
+    /* Signal orange: the annotation colour of technical drawings, and
+       pointedly not the emerald every generated portfolio ships with. */
+    --signal: 24 88% 45%;
+
+    --primary: 24 88% 45%;
+    --primary-foreground: 40 14% 96%;
+    --secondary: 40 10% 90%;
+    --secondary-foreground: 30 6% 14%;
+    --muted: 40 10% 90%;
+    --muted-foreground: 32 5% 40%;
+    --accent: 40 10% 90%;
+    --accent-foreground: 30 6% 14%;
     --card: 0 0% 100%;
-    --card-foreground: 30 8% 10%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 30 8% 10%;
-    --destructive: 4 68% 44%;
-    --destructive-foreground: 40 22% 97%;
-
-    --accent-1: 158 72% 32%;
-    --accent-2: 28 82% 45%;
-    --accent-3: 262 62% 52%;
-    --accent-4: 196 78% 38%;
-    --accent-5: 344 68% 48%;
+    --card-foreground: 30 6% 12%;
+    --destructive: 4 70% 44%;
+    --destructive-foreground: 40 14% 96%;
 
     color-scheme: light;
   }
 
-  /* Dark — warm near-black, ivory, luminous emerald accent. */
   .dark {
-    --background: 36 8% 5%;
-    --foreground: 40 16% 93%;
-    --surface: 36 7% 8%;
-    --elevated: 36 7% 11%;
-    --line: 36 6% 16%;
-    --border: 36 6% 16%;
-    --input: 36 6% 20%;
-    --ring: 152 62% 52%;
+    --background: 35 6% 6%;
+    --foreground: 40 12% 92%;
+    --surface: 35 5% 9%;
+    --elevated: 35 5% 12%;
+    --line: 35 5% 18%;
+    --border: 35 5% 18%;
+    --input: 35 5% 22%;
+    --ring: 26 95% 58%;
 
-    --primary: 152 64% 56%;
-    --primary-foreground: 36 12% 6%;
-    --secondary: 36 6% 14%;
-    --secondary-foreground: 40 16% 93%;
-    --muted: 36 6% 13%;
-    --muted-foreground: 38 7% 58%;
-    --accent: 36 6% 14%;
-    --accent-foreground: 40 16% 93%;
-    --card: 36 7% 8%;
-    --card-foreground: 40 16% 93%;
-    --popover: 36 7% 8%;
-    --popover-foreground: 40 16% 93%;
-    --destructive: 4 62% 52%;
-    --destructive-foreground: 40 16% 93%;
+    --signal: 26 95% 58%;
 
-    --accent-1: 152 68% 58%;
-    --accent-2: 38 94% 62%;
-    --accent-3: 264 88% 74%;
-    --accent-4: 194 90% 62%;
-    --accent-5: 344 88% 68%;
+    --primary: 26 95% 58%;
+    --primary-foreground: 35 10% 7%;
+    --secondary: 35 5% 15%;
+    --secondary-foreground: 40 12% 92%;
+    --muted: 35 5% 14%;
+    --muted-foreground: 38 6% 56%;
+    --accent: 35 5% 15%;
+    --accent-foreground: 40 12% 92%;
+    --card: 35 5% 9%;
+    --card-foreground: 40 12% 92%;
+    --destructive: 4 65% 54%;
+    --destructive-foreground: 40 12% 92%;
 
     color-scheme: dark;
   }
@@ -260,7 +212,6 @@
   }
 
   html {
-    scroll-behavior: smooth;
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -271,8 +222,14 @@
     -webkit-font-smoothing: antialiased;
   }
 
+  /* Figures line up in columns across the whole site. */
+  [class*='font-mono'],
+  .eyebrow {
+    font-variant-numeric: tabular-nums;
+  }
+
   ::selection {
-    background-color: hsl(var(--primary) / 0.25);
+    background-color: hsl(var(--signal) / 0.28);
     color: hsl(var(--foreground));
   }
 
@@ -286,7 +243,6 @@
   ::-webkit-scrollbar-thumb {
     background: hsl(var(--line));
     border: 3px solid hsl(var(--background));
-    border-radius: 99px;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: hsl(var(--muted-foreground) / 0.6);
@@ -294,42 +250,65 @@
 
   :focus-visible {
     outline: 2px solid hsl(var(--ring));
-    outline-offset: 3px;
-    border-radius: 2px;
+    outline-offset: 2px;
   }
 }
 
 /* ------------------------------------------------------------------
-   Editorial primitives
+   Datasheet primitives
    ------------------------------------------------------------------ */
 
 @layer components {
-  /* Small uppercase mono label — the connective tissue of the layout. */
+  /* Small uppercase mono label — carries every field name and index. */
   .eyebrow {
     font-family: var(--font-mono);
     font-size: var(--text-label);
+    line-height: var(--text-label--line-height);
     letter-spacing: var(--text-label--letter-spacing);
     text-transform: uppercase;
     color: hsl(var(--muted-foreground));
   }
 
+  /* Condensed grotesque for display sizes — replaces the display serif. */
   .display {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 600;
   }
 
-  /* Outlined display type. Solid colour is the fallback: without the stroke
-     the glyphs would be invisible, so only go transparent where it is supported. */
-  .text-outline {
-    color: hsl(var(--primary));
+  /* A ruled scale: hairline with ticks hanging below it at a fixed pitch. */
+  .tick-rule {
+    position: relative;
+    height: 5px;
+    border-top: 1px solid hsl(var(--line));
+  }
+  .tick-rule::after {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background-image: repeating-linear-gradient(
+      to right,
+      hsl(var(--line)) 0 1px,
+      transparent 1px 16px
+    );
   }
 
-  @supports (-webkit-text-stroke: 1px currentColor) {
-    .text-outline {
-      color: transparent;
-      -webkit-text-stroke: clamp(1px, 0.22vw, 2.5px) hsl(var(--primary));
-      paint-order: stroke fill;
-    }
+  /* Graph-paper ground for the title block. Faint, and masked off before it
+     reaches the copy, so it reads as the sheet rather than as decoration. */
+  .blueprint-grid {
+    background-image: repeating-linear-gradient(
+        to right,
+        hsl(var(--line)) 0 1px,
+        transparent 1px 5rem
+      ),
+      repeating-linear-gradient(
+        to bottom,
+        hsl(var(--line)) 0 1px,
+        transparent 1px 5rem
+      );
+    opacity: 0.45;
+    mask-image: linear-gradient(to bottom, #000 0%, transparent 68%);
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, transparent 68%);
   }
 
   /* Underline that draws itself from the left on hover. */
@@ -351,14 +330,14 @@
     inset: 0;
     z-index: 60;
     pointer-events: none;
-    opacity: 0.035;
+    opacity: 0.03;
     background-image: url('/noise.svg');
     background-repeat: repeat;
     background-size: 160px 160px;
   }
 
   .dark .grain-overlay {
-    opacity: 0.06;
+    opacity: 0.05;
   }
 }
 
@@ -376,12 +355,12 @@
   .prose-editorial h3,
   .prose-editorial h4 {
     font-family: var(--font-display);
-    font-weight: 400;
+    font-weight: 600;
     color: hsl(var(--foreground));
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
   .prose-editorial h2 {
-    font-size: 1.875rem;
+    font-size: 1.75rem;
     margin-top: 3rem;
     margin-bottom: 1rem;
   }
@@ -400,11 +379,11 @@
   .prose-editorial a {
     color: hsl(var(--foreground));
     text-decoration: underline;
-    text-decoration-color: hsl(var(--primary) / 0.5);
+    text-decoration-color: hsl(var(--signal) / 0.6);
     text-underline-offset: 4px;
   }
   .prose-editorial a:hover {
-    text-decoration-color: hsl(var(--primary));
+    text-decoration-color: hsl(var(--signal));
   }
   .prose-editorial ol {
     margin-block: 1.25rem;
@@ -431,21 +410,19 @@
     position: absolute;
     left: 0.125rem;
     top: 0.7em;
-    width: 0.375rem;
+    width: 0.5rem;
     height: 1px;
-    background: hsl(var(--primary));
+    background: hsl(var(--signal));
   }
   .prose-editorial blockquote {
-    border-left: 2px solid hsl(var(--primary) / 0.6);
+    border-left: 2px solid hsl(var(--signal) / 0.7);
     padding-left: 1.25rem;
     margin-block: 2rem;
-    font-family: var(--font-display);
-    font-size: 1.375rem;
-    line-height: 1.5;
+    font-size: 1.125rem;
+    line-height: 1.6;
     color: hsl(var(--foreground));
   }
   .prose-editorial img {
-    border-radius: var(--radius);
     margin-block: 2rem;
   }
   .prose-editorial hr {
@@ -454,7 +431,6 @@
   }
   .prose-editorial pre {
     overflow-x: auto;
-    border-radius: var(--radius);
     border: 1px solid hsl(var(--line));
     background: hsl(var(--surface));
     padding: 1.25rem 1.5rem;
@@ -468,7 +444,6 @@
     color: hsl(var(--foreground));
     background: hsl(var(--surface));
     border: 1px solid hsl(var(--line));
-    border-radius: 4px;
     padding: 0.125rem 0.375rem;
   }
   .prose-editorial pre code {
@@ -480,13 +455,29 @@
 }
 
 /* ------------------------------------------------------------------
+   GSAP hooks
+   ------------------------------------------------------------------ */
+
+/* Reveal targets start hidden only for visitors who have not asked for
+   reduced motion. A <noscript> rule in the layout restores them without JS. */
+@media (prefers-reduced-motion: no-preference) {
+  .gsap-reveal,
+  .gsap-split {
+    visibility: hidden;
+  }
+}
+
+/* SplitText masks clip at the line box; give descenders a little room. */
+.gsap-split > div {
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+}
+
+/* ------------------------------------------------------------------
    Motion preferences
    ------------------------------------------------------------------ */
 
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {

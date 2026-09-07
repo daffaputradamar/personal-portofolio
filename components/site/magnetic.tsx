@@ -1,18 +1,19 @@
 'use client'
 
-import { useRef } from 'react'
-import { motion, useMotionValue, useSpring, useReducedMotion } from 'motion/react'
+import { useRef, type ReactNode } from 'react'
+
+import { MOTION_OK, gsap, useGSAP } from '@/lib/gsap'
 
 type MagneticProps = {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
   /** How far the element chases the cursor, as a fraction of the offset. */
   strength?: number
 }
 
 /**
- * Pulls its child a little way toward the cursor while hovered, then springs
- * back on leave. Subtle by design — past ~0.25 strength it starts to feel gimmicky.
+ * Pulls its child a little way toward the cursor while hovered, then settles
+ * back on leave. Mouse-only, and off entirely under reduced motion.
  */
 export function Magnetic({
   children,
@@ -20,35 +21,41 @@ export function Magnetic({
   strength = 0.18
 }: MagneticProps) {
   const ref = useRef<HTMLDivElement>(null)
-  const reduced = useReducedMotion()
 
-  const rawX = useMotionValue(0)
-  const rawY = useMotionValue(0)
-  const x = useSpring(rawX, { stiffness: 220, damping: 22, mass: 0.4 })
-  const y = useSpring(rawY, { stiffness: 220, damping: 22, mass: 0.4 })
+  useGSAP(
+    () => {
+      const el = ref.current
+      if (!el) return
 
-  if (reduced) {
-    return <div className={className}>{children}</div>
-  }
+      const mm = gsap.matchMedia()
+      mm.add(`${MOTION_OK} and (pointer: fine)`, () => {
+        const xTo = gsap.quickTo(el, 'x', { duration: 0.7, ease: 'power3' })
+        const yTo = gsap.quickTo(el, 'y', { duration: 0.7, ease: 'power3' })
+
+        const move = (event: PointerEvent) => {
+          const rect = el.getBoundingClientRect()
+          xTo((event.clientX - (rect.left + rect.width / 2)) * strength)
+          yTo((event.clientY - (rect.top + rect.height / 2)) * strength)
+        }
+        const leave = () => {
+          xTo(0)
+          yTo(0)
+        }
+
+        el.addEventListener('pointermove', move)
+        el.addEventListener('pointerleave', leave)
+        return () => {
+          el.removeEventListener('pointermove', move)
+          el.removeEventListener('pointerleave', leave)
+        }
+      })
+    },
+    { scope: ref }
+  )
 
   return (
-    <motion.div
-      ref={ref}
-      className={className}
-      style={{ x, y }}
-      onPointerMove={event => {
-        const el = ref.current
-        if (!el || event.pointerType !== 'mouse') return
-        const rect = el.getBoundingClientRect()
-        rawX.set((event.clientX - (rect.left + rect.width / 2)) * strength)
-        rawY.set((event.clientY - (rect.top + rect.height / 2)) * strength)
-      }}
-      onPointerLeave={() => {
-        rawX.set(0)
-        rawY.set(0)
-      }}
-    >
+    <div ref={ref} className={className}>
       {children}
-    </motion.div>
+    </div>
   )
 }

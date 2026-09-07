@@ -8,8 +8,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
     <ThemeProvider
       enableSystem
       attribute='class'
-      // The design is composed dark-first; light is a considered alternate.
-      defaultTheme='dark'
+      defaultTheme='light'
       disableTransitionOnChange
     >
       {children}

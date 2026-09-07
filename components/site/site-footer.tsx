@@ -28,7 +28,7 @@ export function SiteFooter() {
             </p>
             {profile.availability.open && (
               <p className='mt-5 inline-flex items-center gap-2.5'>
-                <span className='h-1.5 w-1.5 animate-pulse-dot rounded-full bg-primary' />
+                <span aria-hidden className='bg-signal animate-pulse-dot h-1.5 w-1.5' />
                 <span className='eyebrow text-foreground'>
                   {profile.availability.label}
                 </span>

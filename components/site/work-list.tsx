@@ -1,26 +1,8 @@
-'use client'
-
 import Image from 'next/image'
 import Link from 'next/link'
-import { useState } from 'react'
-import {
-  AnimatePresence,
-  motion,
-  useMotionValue,
-  useReducedMotion,
-  useSpring
-} from 'motion/react'
 
 import type { ProjectMetadata } from '@/lib/projects'
-
-/** Row indices cycle the accent ramp, one hue per project. */
-const INDEX_TONES = [
-  'text-accent-1',
-  'text-accent-2',
-  'text-accent-3',
-  'text-accent-4',
-  'text-accent-5'
-]
+import { Reveal } from './reveal'
 
 function LockIcon({ className }: { className?: string }) {
   return (
@@ -56,11 +38,11 @@ function PreviewCard({ project }: { project: ProjectMetadata }) {
   const host = hostname(project.link)
 
   return (
-    <div className='flex h-full w-full flex-col justify-between bg-surface p-5'>
+    <div className='bg-surface flex h-full w-full flex-col justify-between p-5'>
       <div className='flex items-center gap-2'>
         {project.confidential ? (
           <>
-            <LockIcon className='h-3.5 w-3.5 text-muted-foreground' />
+            <LockIcon className='text-muted-foreground h-3.5 w-3.5' />
             <span className='eyebrow'>Private</span>
           </>
         ) : (
@@ -74,7 +56,7 @@ function PreviewCard({ project }: { project: ProjectMetadata }) {
         {project.tech?.slice(0, 4).map(tech => (
           <li
             key={tech}
-            className='rounded-full border border-line px-2 py-0.5 font-mono text-[0.625rem] text-muted-foreground'
+            className='border-line text-muted-foreground border px-2 py-0.5 font-mono text-xs'
           >
             {tech}
           </li>
@@ -85,154 +67,90 @@ function PreviewCard({ project }: { project: ProjectMetadata }) {
 }
 
 /**
- * Project index. On a mouse, hovering a row shows a preview that follows the
- * cursor. Touch and reduced-motion users get the plain list with an inline
- * preview instead.
+ * Project index. Every row shows its preview, summary and stack up front — no
+ * hover or click is needed to learn what a project is. The row itself links to
+ * the full write-up.
  */
 export function WorkList({ projects }: { projects: ProjectMetadata[] }) {
-  const [active, setActive] = useState<number | null>(null)
-  const reduced = useReducedMotion()
-
-  const rawX = useMotionValue(0)
-  const rawY = useMotionValue(0)
-  const x = useSpring(rawX, { stiffness: 260, damping: 28, mass: 0.5 })
-  const y = useSpring(rawY, { stiffness: 260, damping: 28, mass: 0.5 })
-
-  const trackCursor = (event: React.PointerEvent) => {
-    if (event.pointerType !== 'mouse') return
-    rawX.set(event.clientX)
-    rawY.set(event.clientY)
-  }
-
-  const activeProject = active !== null ? projects[active] : null
-
   return (
-    <div
-      onPointerMove={trackCursor}
-      onPointerLeave={() => setActive(null)}
-      className='relative'
-    >
-      <ul>
-        {projects.map((project, i) => (
-          <li key={project.slug}>
+    <ul>
+      {projects.map((project, i) => (
+        <li key={project.slug}>
+          <Reveal delay={Math.min(i, 4) * 0.04}>
             <Link
               href={`/projects/${project.slug}`}
-              onPointerEnter={event => {
-                if (event.pointerType === 'mouse') setActive(i)
-              }}
-              onFocus={() => setActive(i)}
-              className='rule group block py-7 md:py-9'
+              className='rule group grid gap-6 py-8 md:grid-cols-12 md:gap-8 md:py-10'
             >
-              <div className='flex items-baseline gap-5 md:gap-8'>
-                <span
-                  className={`eyebrow shrink-0 pt-1 opacity-70 transition-opacity duration-500 group-hover:opacity-100 ${INDEX_TONES[i % INDEX_TONES.length]}`}
-                >
-                  {String(i + 1).padStart(2, '0')}
-                </span>
+              {/* Preview — always visible */}
+              <div className='bg-surface relative aspect-video overflow-hidden rounded-sm md:col-span-4 md:aspect-4/3'>
+                {project.image ? (
+                  <Image
+                    src={project.image}
+                    alt={project.title || ''}
+                    fill
+                    sizes='(min-width: 768px) 24rem, 100vw'
+                    className='ease-editorial object-cover transition-transform duration-900 group-hover:scale-[1.03]'
+                  />
+                ) : (
+                  <PreviewCard project={project} />
+                )}
+              </div>
 
-                <div className='min-w-0 flex-1'>
-                  <div className='flex flex-wrap items-baseline gap-x-4 gap-y-1'>
-                    <h3 className='display text-2xl leading-tight transition-transform duration-600 ease-editorial md:text-4xl md:group-hover:translate-x-2'>
-                      {project.title}
-                    </h3>
-                    {project.publishedAt && (
-                      <span className='eyebrow text-foreground/35'>
-                        {new Date(project.publishedAt).getFullYear()}
-                      </span>
-                    )}
-                    {project.confidential && (
-                      <span className='inline-flex items-center gap-1.5 rounded-full border border-line px-2 py-0.5 text-[0.625rem] text-muted-foreground'>
-                        <LockIcon className='h-2.5 w-2.5' />
-                        Private
-                      </span>
-                    )}
-                  </div>
-
-                  <p className='mt-2.5 max-w-xl text-sm leading-relaxed text-muted-foreground transition-transform duration-600 ease-editorial md:group-hover:translate-x-2'>
-                    {project.summary}
-                  </p>
-
-                  {project.tech && project.tech.length > 0 && (
-                    <ul className='mt-3 flex flex-wrap gap-x-3 gap-y-1'>
-                      {project.tech.slice(0, 5).map(tech => (
-                        <li
-                          key={tech}
-                          className='font-mono text-[0.6875rem] text-foreground/40'
-                        >
-                          {tech}
-                        </li>
-                      ))}
-                    </ul>
+              {/* Copy */}
+              <div className='flex min-w-0 flex-col md:col-span-8'>
+                <div className='flex flex-wrap items-baseline gap-x-4 gap-y-1'>
+                  <span className='eyebrow text-signal'>
+                    {String(i + 1).padStart(2, '0')}
+                  </span>
+                  {project.publishedAt && (
+                    <span className='eyebrow text-foreground/55'>
+                      {new Date(project.publishedAt).getFullYear()}
+                    </span>
                   )}
-
-                  {/* Inline preview for touch / narrow viewports */}
-                  <div className='relative mt-5 aspect-video w-full overflow-hidden rounded-sm bg-surface md:hidden'>
-                    {project.image ? (
-                      <Image
-                        src={project.image}
-                        alt={project.title || ''}
-                        fill
-                        sizes='100vw'
-                        className='object-cover'
-                      />
-                    ) : (
-                      <PreviewCard project={project} />
-                    )}
-                  </div>
+                  {project.confidential && (
+                    <span className='border-line text-muted-foreground inline-flex items-center gap-1.5 border px-2 py-0.5 font-mono text-xs'>
+                      <LockIcon className='h-2.5 w-2.5' />
+                      Private
+                    </span>
+                  )}
                 </div>
 
-                <span
-                  aria-hidden
-                  className='shrink-0 self-center text-muted-foreground transition-all duration-500 group-hover:text-foreground md:group-hover:translate-x-1'
-                >
+                <h3 className='display ease-editorial mt-3 text-2xl leading-tight transition-transform duration-600 md:text-4xl md:group-hover:translate-x-2'>
+                  {project.title}
+                </h3>
+
+                <p className='text-muted-foreground mt-3 max-w-xl text-sm leading-relaxed'>
+                  {project.outcome ?? project.summary}
+                </p>
+
+                {project.tech && project.tech.length > 0 && (
+                  <ul className='mt-4 flex flex-wrap gap-x-3 gap-y-1'>
+                    {project.tech.slice(0, 6).map(tech => (
+                      <li key={tech} className='text-foreground/60 font-mono text-xs'>
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                )}
+
+                <span className='text-muted-foreground group-hover:text-foreground mt-auto inline-flex items-center gap-2 pt-6 text-xs transition-colors'>
+                  Read the write-up
                   <svg
+                    aria-hidden
                     viewBox='0 0 24 24'
-                    className='h-5 w-5'
+                    className='h-3.5 w-3.5 transition-transform duration-500 group-hover:translate-x-1'
                     fill='none'
                     stroke='currentColor'
-                    strokeWidth='1.25'
+                    strokeWidth='1.5'
                   >
                     <path d='M5 12h14M13 6l6 6-6 6' strokeLinecap='round' />
                   </svg>
                 </span>
               </div>
             </Link>
-          </li>
-        ))}
-      </ul>
-
-      {/* Cursor-following preview */}
-      {!reduced && (
-        <AnimatePresence>
-          {activeProject && (
-            <motion.div
-              key='preview'
-              className='pointer-events-none fixed left-0 top-0 z-40 hidden md:block'
-              style={{ x, y }}
-              initial={{ opacity: 0, scale: 0.92 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.94 }}
-              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <div className='relative -translate-x-1/2 -translate-y-1/2'>
-                <div className='relative h-[13rem] w-[20rem] overflow-hidden rounded-sm border border-line bg-surface shadow-2xl shadow-black/30'>
-                  {activeProject.image ? (
-                    <Image
-                      src={activeProject.image}
-                      alt=''
-                      fill
-                      sizes='20rem'
-                      className='object-cover'
-                    />
-                  ) : (
-                    <PreviewCard project={activeProject} />
-                  )}
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-      )}
-    </div>
+          </Reveal>
+        </li>
+      ))}
+    </ul>
   )
 }

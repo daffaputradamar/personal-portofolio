@@ -2,16 +2,12 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useCallback, useEffect, useState } from 'react'
-import {
-  AnimatePresence,
-  motion,
-  useMotionValueEvent,
-  useScroll
-} from 'motion/react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 import { profile } from '@/lib/resume'
 import { cn } from '@/lib/utils'
+import { EASE, gsap, useGSAP } from '@/lib/gsap'
+import { getLenis } from '@/lib/lenis-store'
 import { ThemeToggle } from '@/components/site/theme-toggle'
 
 const links = [
@@ -22,17 +18,25 @@ const links = [
 
 export function Nav() {
   const pathname = usePathname()
-  const { scrollY } = useScroll()
   const [condensed, setCondensed] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
+  const sheet = useRef<HTMLDivElement>(null)
 
-  useMotionValueEvent(scrollY, 'change', latest => {
-    setCondensed(latest > 24)
-  })
+  // Condense the bar once the page has moved. Plain listener: state is set
+  // from the event callback, never synchronously inside the effect body.
+  useEffect(() => {
+    const onScroll = () => setCondensed(window.scrollY > 24)
+    const initial = requestAnimationFrame(onScroll)
+    window.addEventListener('scroll', onScroll, { passive: true })
+    return () => {
+      cancelAnimationFrame(initial)
+      window.removeEventListener('scroll', onScroll)
+    }
+  }, [])
 
   const closeMenu = useCallback(() => setMenuOpen(false), [])
 
-  // Lock the page behind the open sheet and let Escape dismiss it.
+  // Pause smooth scrolling behind the sheet and let Escape dismiss it.
   useEffect(() => {
     if (!menuOpen) return
 
@@ -40,14 +44,37 @@ export function Nav() {
       if (event.key === 'Escape') setMenuOpen(false)
     }
 
+    getLenis()?.stop()
     document.body.style.overflow = 'hidden'
     document.addEventListener('keydown', onKeyDown)
 
     return () => {
+      getLenis()?.start()
       document.body.style.overflow = ''
       document.removeEventListener('keydown', onKeyDown)
     }
   }, [menuOpen])
+
+  // The sheet stays mounted; GSAP fades it and staggers the links in.
+  useGSAP(
+    () => {
+      const el = sheet.current
+      if (!el) return
+      const items = el.querySelectorAll<HTMLElement>('[data-sheet-item]')
+
+      if (menuOpen) {
+        gsap.to(el, { autoAlpha: 1, duration: 0.3, ease: 'power2.out' })
+        gsap.fromTo(
+          items,
+          { y: 24, autoAlpha: 0 },
+          { y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.06, delay: 0.08, ease: EASE }
+        )
+      } else {
+        gsap.to(el, { autoAlpha: 0, duration: 0.25, ease: 'power2.in' })
+      }
+    },
+    { dependencies: [menuOpen], scope: sheet }
+  )
 
   const isActive = (href: string) =>
     href === '/' ? pathname === '/' : pathname.startsWith(href)
@@ -58,7 +85,7 @@ export function Nav() {
         className={cn(
           'fixed inset-x-0 top-0 z-50 transition-all duration-500',
           condensed
-            ? 'border-b border-line bg-background/80 backdrop-blur-xl'
+            ? 'border-line bg-background/80 border-b backdrop-blur-xl'
             : 'border-b border-transparent'
         )}
       >
@@ -69,22 +96,20 @@ export function Nav() {
               condensed ? 'h-14' : 'h-20'
             )}
           >
-            {/* Wordmark */}
             <Link
               href='/'
               className='group flex items-baseline gap-2'
               aria-label='Home'
             >
-              <span className='display text-lg leading-none tracking-tight'>
-                {profile.name}
+              <span className='display text-xl leading-none tracking-tight'>
+                {profile.initial}
               </span>
               <span
                 aria-hidden
-                className='hidden h-1 w-1 rounded-full bg-primary transition-transform duration-500 group-hover:scale-150 sm:block'
+                className='bg-signal hidden h-1.5 w-1.5 transition-transform duration-500 group-hover:scale-150 sm:block'
               />
             </Link>
 
-            {/* Desktop links */}
             <nav className='hidden items-center gap-1 md:flex'>
               {links.map(link => (
                 <Link
@@ -102,7 +127,7 @@ export function Nav() {
                   <span
                     aria-hidden
                     className={cn(
-                      'absolute inset-x-4 -bottom-px h-px origin-left bg-primary transition-transform duration-500',
+                      'bg-signal absolute inset-x-4 -bottom-px h-px origin-left transition-transform duration-500',
                       isActive(link.href)
                         ? 'scale-x-100'
                         : 'scale-x-0 group-hover:scale-x-100'
@@ -119,7 +144,7 @@ export function Nav() {
                 href={profile.resumeUrl}
                 target='_blank'
                 rel='noreferrer'
-                className='hidden items-center gap-2 rounded-full border border-line px-4 py-2 text-sm transition-colors hover:border-primary/60 hover:bg-primary/5 sm:inline-flex'
+                className='border-line hover:border-signal/60 hover:bg-signal/5 hidden items-center gap-2 border px-4 py-2 text-sm transition-colors sm:inline-flex'
               >
                 Resume
                 <svg
@@ -134,17 +159,17 @@ export function Nav() {
                 </svg>
               </a>
 
-              {/* Mobile trigger */}
               <button
                 type='button'
                 onClick={() => setMenuOpen(true)}
                 className='-mr-2 inline-flex h-10 w-10 items-center justify-center md:hidden'
                 aria-label='Open menu'
                 aria-expanded={menuOpen}
+                aria-controls='mobile-menu'
               >
                 <span className='flex flex-col gap-1.5'>
-                  <span className='block h-px w-6 bg-foreground' />
-                  <span className='block h-px w-6 bg-foreground' />
+                  <span className='bg-foreground block h-px w-6' />
+                  <span className='bg-foreground block h-px w-6' />
                 </span>
               </button>
             </div>
@@ -152,73 +177,61 @@ export function Nav() {
         </div>
       </header>
 
-      {/* Mobile sheet */}
-      <AnimatePresence>
-        {menuOpen && (
-          <motion.div
-            className='fixed inset-0 z-[65] bg-background md:hidden'
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
+      {/* Mobile sheet — always mounted, faded by GSAP, inert while closed. */}
+      <div
+        ref={sheet}
+        id='mobile-menu'
+        data-lenis-prevent
+        inert={!menuOpen}
+        className='bg-background invisible fixed inset-0 z-65 opacity-0 md:hidden'
+      >
+        <div className='container flex h-20 items-center justify-between'>
+          <span className='display text-xl'>{profile.name}</span>
+          <button
+            type='button'
+            onClick={closeMenu}
+            className='-mr-2 inline-flex h-10 w-10 items-center justify-center'
+            aria-label='Close menu'
           >
-            <div className='container flex h-20 items-center justify-between'>
-              <span className='display text-lg'>{profile.name}</span>
-              <button
-                type='button'
+            <svg
+              viewBox='0 0 24 24'
+              className='h-5 w-5'
+              fill='none'
+              stroke='currentColor'
+              strokeWidth='1.5'
+            >
+              <path d='M6 6l12 12M18 6L6 18' strokeLinecap='round' />
+            </svg>
+          </button>
+        </div>
+
+        <nav className='container mt-8 flex flex-col'>
+          {links.map((link, i) => (
+            <div key={link.href} data-sheet-item className='rule py-5'>
+              <Link
+                href={link.href}
                 onClick={closeMenu}
-                className='-mr-2 inline-flex h-10 w-10 items-center justify-center'
-                aria-label='Close menu'
+                className='display flex items-baseline justify-between text-4xl'
               >
-                <svg
-                  viewBox='0 0 24 24'
-                  className='h-5 w-5'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='1.5'
-                >
-                  <path d='M6 6l12 12M18 6L6 18' strokeLinecap='round' />
-                </svg>
-              </button>
+                {link.name}
+                <span className='eyebrow'>{`0${i + 1}`}</span>
+              </Link>
             </div>
+          ))}
 
-            <nav className='container mt-8 flex flex-col'>
-              {links.map((link, i) => (
-                <motion.div
-                  key={link.href}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.08 + i * 0.07, duration: 0.5 }}
-                  className='rule py-5'
-                >
-                  <Link
-                    href={link.href}
-                    onClick={closeMenu}
-                    className='display flex items-baseline justify-between text-4xl'
-                  >
-                    {link.name}
-                    <span className='eyebrow'>{`0${i + 1}`}</span>
-                  </Link>
-                </motion.div>
-              ))}
-
-              <motion.a
-                href={profile.resumeUrl}
-                target='_blank'
-                rel='noreferrer'
-                onClick={closeMenu}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.08 + links.length * 0.07, duration: 0.5 }}
-                className='rule display flex items-baseline justify-between py-5 text-4xl'
-              >
-                Resume
-                <span className='eyebrow'>PDF</span>
-              </motion.a>
-            </nav>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          <a
+            href={profile.resumeUrl}
+            target='_blank'
+            rel='noreferrer'
+            onClick={closeMenu}
+            data-sheet-item
+            className='rule display flex items-baseline justify-between py-5 text-4xl'
+          >
+            Resume
+            <span className='eyebrow'>PDF</span>
+          </a>
+        </nav>
+      </div>
     </>
   )
 }

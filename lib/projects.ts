@@ -12,6 +12,8 @@ export type Project = {
 export type ProjectMetadata = {
   title?: string
   summary?: string
+  problem?: string
+  outcome?: string
   image?: string
   author?: string
   publishedAt?: string

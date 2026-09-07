@@ -27,7 +27,7 @@ export function PostList({ posts }: { posts: PostMetadata[] }) {
               className='rule group grid gap-2 py-7 md:grid-cols-12 md:gap-8'
             >
               <div className='md:col-span-3'>
-                <span className='eyebrow transition-colors duration-500 group-hover:text-accent-5'>
+                <span className='eyebrow transition-colors duration-500 group-hover:text-signal'>
                   {post.publishedAt ? formatDate(post.publishedAt) : 'Draft'}
                 </span>
               </div>

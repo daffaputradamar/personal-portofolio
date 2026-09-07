@@ -1,0 +1,36 @@
+---
+title: 'Agent Builder'
+summary: 'Internal framework and workspace for building chatbot agents, with LangChain runtimes, LangGraph orchestration and MCP tool distribution.'
+problem: 'Every team that wanted a chatbot rebuilt the same plumbing — prompting, tool wiring, auth and deployment — and none of it was reusable.'
+outcome: 'One workspace where a team composes an agent from tools, MCP servers and functions, then publishes or embeds it without writing infrastructure.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-01'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangChain', 'LangGraph', 'MCP', 'vLLM', 'LiteLLM', 'Next.js', 'TypeScript']
+confidential: true
+category: 'internal'
+---
+
+**Agent Builder** is the framework the company builds chatbot agents on. Rather than each team standing up its own bot, a team composes an agent in a shared workspace — pick a model, attach tools, register an MCP server, add custom functions — and publishes it.
+
+## What it does
+
+- **Agent catalogue**: agents are created, managed and chatted with in one place, scoped either to the person who built them or shared across the organisation.
+- **Tools**: capabilities attach to an agent declaratively, so the same tool serves every agent that needs it instead of being re-implemented per bot.
+- **MCP servers**: an agent can be pointed at a Model Context Protocol server and inherit everything that server exposes, which is how a capability added in one place reaches every agent at once.
+- **Functions**: custom logic for the cases a generic tool does not cover.
+- **Embedding**: a published agent can be embedded into another internal application rather than only used through the workspace chat.
+- **Access scoping**: agents are personal or shared, and the workspace is divided by business unit.
+
+## Architecture
+
+**LangChain** provides the agent runtime — model bindings, prompting and tool invocation. **LangGraph** sits above it for agentic behaviour: an agent that has to plan, call something, evaluate the result and possibly loop is an explicit state graph rather than a prompt that hopes for the best. That distinction is what makes multi-step behaviour debuggable, because a run has inspectable state at each node instead of one opaque completion.
+
+Inference runs on self-hosted **vLLM** behind a **LiteLLM** gateway, so every agent in the workspace shares one auth, routing and usage-tracking surface, and no conversation leaves the network.
+
+Tools are served over **MCP** rather than being compiled into the application. Defining a capability once and letting any agent — or any other internal client — consume it is the whole reason the platform is a framework instead of a collection of chatbots.
+
+## Grounding
+
+Agents that need to answer from company documents query the [RAG Knowledge Base](/projects/rag-knowledge-base), which handles embedding, storage and retrieval as a separate service.
