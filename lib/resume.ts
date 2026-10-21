@@ -36,8 +36,6 @@ export const profile = {
    */
   phone: '+62 857-5555-7954',
   resumeUrl: '/docs/cv-daffa.pdf',
-  /** Name the PDF saves under, so it does not land in Downloads as 'cv-daffa'. */
-  resumeFileName: 'Daffa-Akbar-CV.pdf',
   siteUrl: 'https://portofoliodaffa.vercel.app'
 } as const
 

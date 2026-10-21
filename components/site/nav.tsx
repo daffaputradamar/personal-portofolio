@@ -213,12 +213,13 @@ export function Nav({ cvSize }: { cvSize?: string }) {
 
           <a
             href={profile.resumeUrl}
-            download={profile.resumeFileName}
+            target='_blank'
+            rel='noreferrer'
             onClick={closeMenu}
             data-sheet-item
             className='rule display text-signal flex items-baseline justify-between py-5 text-4xl'
           >
-            Download CV
+            View CV
             <span className='eyebrow'>
               {['PDF', cvSize].filter(Boolean).join(' · ')}
             </span>

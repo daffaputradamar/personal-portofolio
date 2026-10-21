@@ -1,8 +1,8 @@
 import { cn } from '@/lib/utils'
 import { profile } from '@/lib/resume'
 
-/** Tray-and-arrow glyph, drawn to the same stroke as the site's other icons. */
-function DownloadIcon({ className }: { className?: string }) {
+/** Page with an outward arrow — "opens elsewhere", at the site's stroke. */
+function OpenIcon({ className }: { className?: string }) {
   return (
     <svg
       aria-hidden
@@ -14,8 +14,8 @@ function DownloadIcon({ className }: { className?: string }) {
       strokeLinejoin='round'
       className={cn('h-4 w-4 shrink-0', className)}
     >
-      <path d='M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5' />
-      <path d='M4.5 15.5V19a1 1 0 0 0 1 1h13a1 1 0 0 0 1-1v-3.5' />
+      <path d='M14 4h6v6M20 4l-9 9' />
+      <path d='M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5' />
     </svg>
   )
 }
@@ -30,9 +30,9 @@ const styles: Record<Variant, string> = {
 }
 
 /**
- * The CV download. Uses `download` so the PDF saves under a real file name
- * instead of opening in a tab, and states format and size up front so nobody
- * has to wonder what clicking it does.
+ * The CV link. Opens the PDF in a new tab, where the browser's viewer offers
+ * its own save button, and states format and size up front so nobody has to
+ * wonder what clicking it does.
  */
 export function CvDownload({
   variant,
@@ -51,17 +51,18 @@ export function CvDownload({
   return (
     <a
       href={profile.resumeUrl}
-      download={profile.resumeFileName}
+      target='_blank'
+      rel='noreferrer'
       onClick={onClick}
-      aria-label={`Download CV (${meta})`}
+      aria-label={`View CV (${meta}, opens in a new tab)`}
       className={cn(
         'group inline-flex items-center gap-2.5 transition-colors duration-300',
         styles[variant],
         className
       )}
     >
-      <DownloadIcon className='transition-transform duration-300 group-hover:translate-y-0.5' />
-      <span>Download CV</span>
+      <OpenIcon className='transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5' />
+      <span>View CV</span>
       <span
         className={cn(
           'font-mono text-xs',
