@@ -3,7 +3,9 @@ import type { Metadata } from 'next'
 import ContactForm from '@/components/contact-form'
 import { PageHeader } from '@/components/site/page-header'
 import { Reveal } from '@/components/site/reveal'
+import { CvDownload } from '@/components/site/cv-download'
 import { profile, socials } from '@/lib/resume'
+import { getResumeSize } from '@/lib/resume-file'
 
 export const metadata: Metadata = {
   title: 'Contact',
@@ -90,17 +92,11 @@ export default function Contact() {
             </Reveal>
 
             <Reveal delay={0.28}>
-              <a
-                href={profile.resumeUrl}
-                target='_blank'
-                rel='noreferrer'
-                className='group mt-10 inline-flex items-center gap-3 rounded-full border border-line px-6 py-3.5 text-sm transition-colors hover:border-foreground/40 hover:bg-foreground/5'
-              >
-                Download resume
-                <span className='font-mono text-xs text-muted-foreground'>
-                  PDF
-                </span>
-              </a>
+              <CvDownload
+                variant='primary'
+                size={getResumeSize()}
+                className='mt-10'
+              />
             </Reveal>
           </aside>
         </div>

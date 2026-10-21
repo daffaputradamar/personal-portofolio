@@ -75,11 +75,10 @@ export function SiteFooter() {
               <li>
                 <a
                   href={profile.resumeUrl}
-                  target='_blank'
-                  rel='noreferrer'
+                  download={profile.resumeFileName}
                   className='flex items-baseline justify-between gap-4 text-sm text-muted-foreground transition-colors hover:text-foreground'
                 >
-                  <span className='link-underline'>Resume</span>
+                  <span className='link-underline'>Download CV</span>
                   <span className='font-mono text-xs text-foreground/35'>
                     PDF
                   </span>

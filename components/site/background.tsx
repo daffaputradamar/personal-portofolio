@@ -1,5 +1,6 @@
 import { achievements, education, languages } from '@/lib/resume'
 import { Field } from './field'
+import { GradeScale } from './grade-scale'
 import { Reveal } from './reveal'
 import { Section } from './section'
 
@@ -28,6 +29,9 @@ export function Background() {
                     {item.period}
                     {item.note ? ` · ${item.note}` : ''}
                   </p>
+                  {item.gpa && (
+                    <GradeScale score={item.gpa.score} max={item.gpa.max} />
+                  )}
                 </div>
               ))}
             </div>

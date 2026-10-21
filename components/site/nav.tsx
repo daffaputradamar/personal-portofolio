@@ -16,7 +16,11 @@ const links = [
   { name: 'Contact', href: '/contact' }
 ]
 
-export function Nav() {
+/**
+ * `cvSize` is read from disk by the layout; the nav runs on the client. The CV
+ * lives in the hero on desktop, so only the mobile sheet carries it here.
+ */
+export function Nav({ cvSize }: { cvSize?: string }) {
   const pathname = usePathname()
   const [condensed, setCondensed] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -67,7 +71,14 @@ export function Nav() {
         gsap.fromTo(
           items,
           { y: 24, autoAlpha: 0 },
-          { y: 0, autoAlpha: 1, duration: 0.7, stagger: 0.06, delay: 0.08, ease: EASE }
+          {
+            y: 0,
+            autoAlpha: 1,
+            duration: 0.7,
+            stagger: 0.06,
+            delay: 0.08,
+            ease: EASE
+          }
         )
       } else {
         gsap.to(el, { autoAlpha: 0, duration: 0.25, ease: 'power2.in' })
@@ -140,25 +151,6 @@ export function Nav() {
             <div className='flex items-center gap-2'>
               <ThemeToggle />
 
-              <a
-                href={profile.resumeUrl}
-                target='_blank'
-                rel='noreferrer'
-                className='border-line hover:border-signal/60 hover:bg-signal/5 hidden items-center gap-2 border px-4 py-2 text-sm transition-colors sm:inline-flex'
-              >
-                Resume
-                <svg
-                  aria-hidden
-                  viewBox='0 0 24 24'
-                  className='h-3.5 w-3.5'
-                  fill='none'
-                  stroke='currentColor'
-                  strokeWidth='1.75'
-                >
-                  <path d='M7 17 17 7M17 7H9M17 7v8' strokeLinecap='round' />
-                </svg>
-              </a>
-
               <button
                 type='button'
                 onClick={() => setMenuOpen(true)}
@@ -221,14 +213,15 @@ export function Nav() {
 
           <a
             href={profile.resumeUrl}
-            target='_blank'
-            rel='noreferrer'
+            download={profile.resumeFileName}
             onClick={closeMenu}
             data-sheet-item
-            className='rule display flex items-baseline justify-between py-5 text-4xl'
+            className='rule display text-signal flex items-baseline justify-between py-5 text-4xl'
           >
-            Resume
-            <span className='eyebrow'>PDF</span>
+            Download CV
+            <span className='eyebrow'>
+              {['PDF', cvSize].filter(Boolean).join(' · ')}
+            </span>
           </a>
         </nav>
       </div>

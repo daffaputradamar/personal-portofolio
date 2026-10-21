@@ -12,6 +12,9 @@ import 'lenis/dist/lenis.css'
 import './globals.css'
 import Providers from '@/components/providers'
 import { Nav } from '@/components/site/nav'
+import { getResumeSize } from '@/lib/resume-file'
+import { siteGraph } from '@/lib/structured-data'
+import { JsonLd } from '@/components/json-ld'
 import { SiteFooter } from '@/components/site/site-footer'
 import { Grain } from '@/components/site/grain'
 import { ScrollProgress } from '@/components/site/scroll-progress'
@@ -59,12 +62,23 @@ export const metadata: Metadata = {
     'Next.js',
     'TypeScript',
     'vLLM',
+    'LiteLLM',
+    'LangChain',
+    'LangGraph',
+    'LLM engineer',
+    'AI Engineer Indonesia',
+    'AI Engineer Surabaya',
     'Surabaya',
     'Indonesia',
-    'portfolio'
+    'portfolio',
+    'CV'
   ],
   authors: [{ name: profile.name, url: profile.siteUrl }],
   creator: profile.name,
+  publisher: profile.name,
+  applicationName: `${profile.name} — Portfolio`,
+  category: 'technology',
+  formatDetection: { telephone: false, address: false, email: false },
   openGraph: {
     type: 'website',
     locale: 'en_US',
@@ -81,16 +95,21 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true }
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1
+    }
   },
   alternates: { canonical: '/' }
 }
 
 export const viewport: Viewport = {
-  themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#f7f4ee' },
-    { media: '(prefers-color-scheme: dark)', color: '#0d0d0c' }
-  ]
+  // The site opens dark regardless of the OS setting, so the browser chrome
+  // matches the dark palette rather than following prefers-color-scheme.
+  themeColor: '#0d0d0c',
+  colorScheme: 'dark light'
 }
 
 export default function RootLayout({
@@ -102,6 +121,7 @@ export default function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <head>
         {/* Reveal animations hide content until GSAP runs; without JS, show it. */}
+        <JsonLd data={siteGraph()} />
         <noscript>
           <style>{`.gsap-reveal,.gsap-split{visibility:visible!important}`}</style>
         </noscript>
@@ -124,7 +144,7 @@ export default function RootLayout({
 
           <SmoothScroll />
           <ScrollProgress />
-          <Nav />
+          <Nav cvSize={getResumeSize()} />
 
           <main id='main' className='relative z-10 grow'>
             {children}

@@ -36,6 +36,8 @@ export const profile = {
    */
   phone: '+62 857-5555-7954',
   resumeUrl: '/docs/cv-daffa.pdf',
+  /** Name the PDF saves under, so it does not land in Downloads as 'cv-daffa'. */
+  resumeFileName: 'Daffa-Akbar-CV.pdf',
   siteUrl: 'https://portofoliodaffa.vercel.app'
 } as const
 
@@ -79,6 +81,11 @@ export type Experience = {
   highlights: string[]
   stack: string[]
   current?: boolean
+  /**
+   * The diagram that explains this role. 'platform' points back to Fig. 01 in
+   * Selected Work; 'decomposition' draws Fig. 02 in place.
+   */
+  figure?: 'platform' | 'decomposition'
 }
 
 export const experiences: Experience[] = [
@@ -97,7 +104,8 @@ export const experiences: Experience[] = [
       'Integrated LLM services with the enterprise data warehouse, opening operational data to natural-language querying and retrieval.'
     ],
     stack: ['vLLM', 'LiteLLM', 'LangChain', 'LangGraph', 'Ollama', 'Python'],
-    current: true
+    current: true,
+    figure: 'platform'
   },
   {
     role: 'Senior IT Application Developer',
@@ -120,7 +128,8 @@ export const experiences: Experience[] = [
       'Docker',
       'Apache Kafka',
       'SQL Server'
-    ]
+    ],
+    figure: 'decomposition'
   },
   {
     role: 'Web Developer',
@@ -141,6 +150,8 @@ export type Education = {
   qualification: string
   institution: string
   period: string
+  /** Final grade on its own, so the scale in Background can draw it. */
+  gpa?: { score: number; max: number }
   note?: string
 }
 
@@ -149,7 +160,8 @@ export const education: Education[] = [
     qualification: 'Bachelor of Applied Computer Science',
     institution: 'State Polytechnic of Malang',
     period: '2017 — 2021',
-    note: 'GPA 3.91 / 4.00 · Malang, Indonesia'
+    gpa: { score: 3.91, max: 4 },
+    note: 'Malang, Indonesia'
   }
 ]
 

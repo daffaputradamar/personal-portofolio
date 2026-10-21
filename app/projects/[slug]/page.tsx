@@ -6,7 +6,9 @@ import { notFound } from 'next/navigation'
 import MDXContent from '@/components/mdx-content'
 import { ContactCta } from '@/components/site/contact-cta'
 import { Reveal } from '@/components/site/reveal'
+import { JsonLd } from '@/components/json-ld'
 import { getProjectBySlug, getProjects } from '@/lib/projects'
+import { articleGraph } from '@/lib/structured-data'
 import { formatDate } from '@/lib/utils'
 
 export async function generateStaticParams() {
@@ -28,11 +30,20 @@ export async function generateMetadata(props: {
     title,
     description: summary,
     alternates: { canonical: `/projects/${slug}` },
+    // Setting openGraph here replaces the site-wide block, so the shared card
+    // has to be named again for projects without their own image.
     openGraph: {
       title: title ?? undefined,
       description: summary,
+      url: `/projects/${slug}`,
       type: 'article',
-      images: image ? [{ url: image }] : undefined
+      images: [image ?? '/opengraph-image']
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title ?? undefined,
+      description: summary,
+      images: [image ?? '/twitter-image']
     }
   }
 }
@@ -67,6 +78,17 @@ export default async function Project(props: {
 
   return (
     <>
+      <JsonLd
+        data={articleGraph({
+          type: 'CreativeWork',
+          path: `/projects/${slug}`,
+          title,
+          description: metadata.summary,
+          datePublished: publishedAt,
+          image,
+          keywords: tech
+        })}
+      />
       <article>
         <header className='container pt-32 pb-12 md:pt-40'>
           <Link

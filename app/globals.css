@@ -339,6 +339,117 @@
   .dark .grain-overlay {
     opacity: 0.05;
   }
+
+  /* Dot grid behind a figure — drafting paper, quieter than the hero's
+     ruled grid so the diagram on top carries the contrast. */
+  .figure-grid {
+    background-image: radial-gradient(
+      hsl(var(--line)) 1px,
+      transparent 1.2px
+    );
+    background-size: 16px 16px;
+    background-position: 8px 8px;
+  }
+
+  /* A connector with a signal pulse running along it in the direction of
+     flow. The hairline is the content; the pulse is only emphasis, so it is
+     dropped entirely under reduced motion. */
+  .flow-x,
+  .flow-y {
+    position: relative;
+    overflow: hidden;
+    background-color: hsl(var(--line));
+  }
+  .flow-x {
+    height: 1px;
+  }
+  .flow-y {
+    width: 1px;
+  }
+  .flow-x::after,
+  .flow-y::after {
+    content: '';
+    position: absolute;
+    animation-duration: 2.6s;
+    animation-timing-function: cubic-bezier(0.45, 0, 0.55, 1);
+    animation-iteration-count: infinite;
+    animation-delay: var(--flow-delay, 0s);
+  }
+  .flow-x::after {
+    inset: 0 auto 0 0;
+    width: 45%;
+    background: linear-gradient(
+      to right,
+      transparent,
+      hsl(var(--signal)) 70%,
+      transparent
+    );
+    animation-name: flow-x;
+  }
+  .flow-y::after {
+    inset: 0 0 auto 0;
+    height: 45%;
+    background: linear-gradient(
+      to bottom,
+      transparent,
+      hsl(var(--signal)) 70%,
+      transparent
+    );
+    animation-name: flow-y;
+  }
+  /* Runs bottom to top, for an edge feeding the node above it. */
+  .flow-y.flow-up::after {
+    background: linear-gradient(
+      to top,
+      transparent,
+      hsl(var(--signal)) 70%,
+      transparent
+    );
+    animation-name: flow-y-up;
+  }
+
+  @keyframes flow-x {
+    from {
+      transform: translateX(-100%);
+    }
+    to {
+      transform: translateX(225%);
+    }
+  }
+  @keyframes flow-y {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(225%);
+    }
+  }
+  @keyframes flow-y-up {
+    from {
+      transform: translateY(225%);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .flow-x::after,
+    .flow-y::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  /* Diagonal hatching — marks a bar or block as a different kind of thing
+     (education against work, legacy against new) without a second colour. */
+  .hatch {
+    background-image: repeating-linear-gradient(
+      -45deg,
+      hsl(var(--muted-foreground) / 0.35) 0 1px,
+      transparent 1px 6px
+    );
+  }
 }
 
 /* ------------------------------------------------------------------

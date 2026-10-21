@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .bg { fill: #211f1c } .fg { fill: #f7f4ee } .sig { fill: #f9883a }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #f7f4ee } .fg { fill: #211f1c } .sig { fill: #d55b0e }
+    }
+  </style>
+  <rect class="bg" width="64" height="64"/>
+  <g transform="translate(-2.5 0)">
+    <path class="fg" fill-rule="evenodd" d="M9 15H22.5Q29 15 29 21.5V42.5Q29 49 22.5 49H9Z M15 21V43H21.5Q23 43 23 41.5V22.5Q23 21 21.5 21Z M32 49L38.5 15H46.5L53 49H47L45.8 42.5H39.2L38 49Z M40.2 37H44.8L42.5 23.5Z"/>
+    <rect class="sig" x="55" y="42" width="7" height="7"/>
+  </g>
+</svg>

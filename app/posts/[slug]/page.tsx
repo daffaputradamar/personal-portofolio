@@ -5,7 +5,9 @@ import { notFound } from 'next/navigation'
 
 import MDXContent from '@/components/mdx-content'
 import { Reveal } from '@/components/site/reveal'
+import { JsonLd } from '@/components/json-ld'
 import { getPostBySlug, getPosts } from '@/lib/posts'
+import { articleGraph } from '@/lib/structured-data'
 import { profile } from '@/lib/resume'
 import { formatDate } from '@/lib/utils'
 
@@ -31,9 +33,18 @@ export async function generateMetadata(props: {
     openGraph: {
       title: title ?? undefined,
       description: summary,
+      url: `/posts/${slug}`,
       type: 'article',
       publishedTime: publishedAt,
-      images: image ? [{ url: image }] : undefined
+      authors: [profile.name],
+      // Replaces the site-wide block, so name the shared card as the fallback.
+      images: [image ?? '/opengraph-image']
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title ?? undefined,
+      description: summary,
+      images: [image ?? '/twitter-image']
     }
   }
 }
@@ -63,11 +74,21 @@ export default async function Post(props: {
 
   return (
     <>
+      <JsonLd
+        data={articleGraph({
+          type: 'BlogPosting',
+          path: `/posts/${slug}`,
+          title,
+          description: metadata.summary,
+          datePublished: publishedAt,
+          image
+        })}
+      />
       <article>
         <header className='container-prose pt-32 pb-12 md:pt-40'>
           <Link
             href='/posts'
-            className='group inline-flex items-center gap-2 text-sm text-muted-foreground transition-colors hover:text-foreground'
+            className='group text-muted-foreground hover:text-foreground inline-flex items-center gap-2 text-sm transition-colors'
           >
             <svg
               aria-hidden
@@ -82,7 +103,7 @@ export default async function Post(props: {
             <span>All writing</span>
           </Link>
 
-          <h1 className='display mt-10 text-headline text-balance'>{title}</h1>
+          <h1 className='display text-headline mt-10 text-balance'>{title}</h1>
 
           <div className='rule mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 pt-5'>
             <span className='eyebrow'>{author ?? profile.name}</span>
@@ -95,7 +116,7 @@ export default async function Post(props: {
 
         {image && (
           <Reveal className='container-prose' offset={16}>
-            <div className='relative aspect-video w-full overflow-hidden rounded-sm bg-surface'>
+            <div className='bg-surface relative aspect-video w-full overflow-hidden rounded-sm'>
               <Image
                 src={image}
                 alt={title || ''}
@@ -124,13 +145,13 @@ export default async function Post(props: {
             <div className='container-prose'>
               <p className='eyebrow'>Read next</p>
               <div className='mt-4 flex items-center justify-between gap-6'>
-                <h2 className='display text-2xl transition-transform duration-600 ease-editorial group-hover:translate-x-2 md:text-3xl'>
+                <h2 className='display ease-editorial text-2xl transition-transform duration-600 group-hover:translate-x-2 md:text-3xl'>
                   {next.title}
                 </h2>
                 <svg
                   aria-hidden
                   viewBox='0 0 24 24'
-                  className='h-5 w-5 shrink-0 text-muted-foreground transition-all duration-500 group-hover:translate-x-1 group-hover:text-foreground'
+                  className='text-muted-foreground group-hover:text-foreground h-5 w-5 shrink-0 transition-all duration-500 group-hover:translate-x-1'
                   fill='none'
                   stroke='currentColor'
                   strokeWidth='1.25'

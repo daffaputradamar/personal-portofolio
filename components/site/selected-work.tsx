@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 
 import { getProjects } from '@/lib/projects'
+import { PlatformDiagram } from './platform-diagram'
 import { Reveal } from './reveal'
 import { Section } from './section'
 
@@ -29,7 +30,11 @@ export async function SelectedWork() {
       lede='Private systems, described in the open. Problem, outcome and stack for each.'
       meta={`${all.length} total`}
     >
-      <div className='border-line border-t'>
+      <Reveal>
+        <PlatformDiagram />
+      </Reveal>
+
+      <div className='border-line mt-14 border-t md:mt-20'>
         {featured.map((item, i) => {
           const project = all.find(project => project.slug === item.slug)
           if (!project) return null

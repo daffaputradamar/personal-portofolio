@@ -1,4 +1,7 @@
+import { ArrowUp } from 'lucide-react'
+
 import { experiences } from '@/lib/resume'
+import { DecompositionFigure } from './decomposition-figure'
 import { DrawLine } from './draw-line'
 import { Reveal } from './reveal'
 import { Section } from './section'
@@ -99,6 +102,28 @@ export function Experience() {
                     </li>
                   ))}
                 </ul>
+
+                {role.figure === 'decomposition' && (
+                  <div className='mt-9 max-w-3xl'>
+                    <DecompositionFigure />
+                  </div>
+                )}
+
+                {role.figure === 'platform' && (
+                  <a
+                    href='#work'
+                    className='group border-line hover:border-signal/60 mt-7 inline-flex items-center gap-3 border border-dashed px-3.5 py-2 text-sm transition-colors'
+                  >
+                    <span className='eyebrow text-signal'>Fig. 01</span>
+                    <span className='text-muted-foreground group-hover:text-foreground transition-colors'>
+                      See how the platform fits together
+                    </span>
+                    <ArrowUp
+                      aria-hidden
+                      className='text-muted-foreground h-3.5 w-3.5 transition-transform group-hover:-translate-y-0.5'
+                    />
+                  </a>
+                )}
               </div>
             </article>
           </Reveal>

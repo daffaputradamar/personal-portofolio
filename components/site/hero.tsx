@@ -6,7 +6,7 @@ import { ArrowDown, ArrowUpRight } from 'lucide-react'
 
 import { profile, socials } from '@/lib/resume'
 import { MOTION_OK, gsap, useGSAP } from '@/lib/gsap'
-import { DimensionLine } from './dimension-line'
+import { CvDownload } from './cv-download'
 import { Field } from './field'
 import { FocusCard } from './focus-card'
 import { LocalTime } from './local-time'
@@ -39,22 +39,11 @@ const nameLines =
     ? [nameParts.slice(0, -1).join(' '), nameParts[nameParts.length - 1]]
     : nameParts
 
-const milestones = [
-  { figure: '2020', label: 'Freelance' },
-  { figure: '2021', label: 'Joined MPM' },
-  { figure: '2026', label: 'Applied AI' }
-]
-
-/** Span the dimension line measures, derived so it stays true if dates move. */
-const years =
-  Number(milestones[milestones.length - 1].figure) -
-  Number(milestones[0].figure)
-
 /**
  * The title block of the sheet: identity, live local time and revision across
  * the top, the headline, then the spec fields a reader actually came for.
  */
-export function Hero() {
+export function Hero({ cvSize }: { cvSize?: string }) {
   const section = useRef<HTMLElement>(null)
   const grid = useRef<HTMLDivElement>(null)
   const copy = useRef<HTMLDivElement>(null)
@@ -169,11 +158,13 @@ export function Hero() {
           </Reveal>
 
           <Reveal delay={0.42} offset={12}>
-            <div className='mt-9 flex flex-wrap items-center gap-6'>
-              <Magnetic>
+            {/* The two buttons share the spec table's width and split it,
+                whether they sit side by side or stack. */}
+            <div className='mt-9 flex max-w-lg flex-wrap gap-3'>
+              <Magnetic className='grow'>
                 <a
                   href='#work'
-                  className='group bg-foreground text-background inline-flex items-center gap-4 px-6 py-3.5 text-sm'
+                  className='group bg-foreground text-background flex items-center justify-center gap-4 px-6 py-3.5 text-sm'
                 >
                   See what I&rsquo;ve built
                   <ArrowDown
@@ -182,14 +173,19 @@ export function Hero() {
                   />
                 </a>
               </Magnetic>
-              <Link
-                href='/contact'
-                className='link-underline inline-flex items-center gap-2 py-2 text-sm'
-              >
-                Discuss a project
-                <ArrowUpRight aria-hidden className='h-4 w-4' />
-              </Link>
+              <CvDownload
+                variant='outline'
+                size={cvSize}
+                className='grow justify-center'
+              />
             </div>
+            <Link
+              href='/contact'
+              className='link-underline mt-5 inline-flex items-center gap-2 py-1 text-sm'
+            >
+              Discuss a project
+              <ArrowUpRight aria-hidden className='h-4 w-4' />
+            </Link>
           </Reveal>
         </div>
 
@@ -200,35 +196,40 @@ export function Hero() {
         </div>
       </div>
 
-      {/* Footer scale — the milestones set the width the dimension measures. */}
+      {/* Footer row: where to find me, and a cue that the sheet continues.
+          Dates live in the Experience timeline further down. */}
       <Reveal offset={8} delay={0.5}>
         <div className='mt-16'>
           <div className='tick-rule' />
-          <div className='mt-5 flex flex-wrap items-end justify-between gap-x-10 gap-y-8'>
-            <div>
-              <DimensionLine value={`${String(years).padStart(2, '0')} yrs`} />
-              <dl className='mt-3 flex gap-9 md:gap-16'>
-                {milestones.map(stat => (
-                  <div key={stat.label}>
-                    <dt className='eyebrow'>{stat.label}</dt>
-                    <dd className='mt-1 font-mono text-lg'>{stat.figure}</dd>
-                  </div>
-                ))}
-              </dl>
-            </div>
-            <div className='flex gap-6'>
+          <div className='mt-4 flex flex-wrap items-center justify-between gap-x-10 gap-y-4'>
+            <ul className='flex flex-wrap gap-x-7 gap-y-2'>
               {socials.map(social => (
-                <a
-                  key={social.name}
-                  href={social.href}
-                  target={social.name === 'Email' ? undefined : '_blank'}
-                  rel='noreferrer'
-                  className='eyebrow hover:text-foreground transition-colors'
-                >
-                  {social.name}
-                </a>
+                <li key={social.name}>
+                  <a
+                    href={social.href}
+                    target={social.name === 'Email' ? undefined : '_blank'}
+                    rel='noreferrer'
+                    className='group eyebrow hover:text-foreground inline-flex items-center gap-1.5 transition-colors'
+                  >
+                    {social.name}
+                    <ArrowUpRight
+                      aria-hidden
+                      className='h-3 w-3 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
+                    />
+                  </a>
+                </li>
               ))}
-            </div>
+            </ul>
+            <a
+              href='#work'
+              className='group eyebrow hover:text-foreground inline-flex items-center gap-2 transition-colors'
+            >
+              Scroll
+              <ArrowDown
+                aria-hidden
+                className='h-3 w-3 transition-transform group-hover:translate-y-0.5'
+              />
+            </a>
           </div>
         </div>
       </Reveal>
