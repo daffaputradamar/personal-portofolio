@@ -1,6 +1,9 @@
 import Link from 'next/link'
 
+import { getPosts } from '@/lib/posts'
+import { getProjects } from '@/lib/projects'
 import { profile, socials } from '@/lib/resume'
+import { stackCount } from './home/stack'
 
 const columns = [
   {
@@ -14,7 +17,16 @@ const columns = [
   }
 ]
 
-export function SiteFooter() {
+export async function SiteFooter() {
+  const [projects, posts] = await Promise.all([getProjects(), getPosts()])
+  // An API-style receipt for the page: every figure is counted, none invented.
+  const usage = {
+    projects: projects.length,
+    posts: posts.length,
+    tools: stackCount,
+    built: new Date().toISOString().slice(0, 10)
+  }
+
   return (
     <footer className='rule'>
       <div className='container py-14'>
@@ -22,13 +34,16 @@ export function SiteFooter() {
           {/* Identity */}
           <div className='md:col-span-5'>
             <p className='display text-2xl'>{profile.name}</p>
-            <p className='mt-2 max-w-xs text-sm leading-relaxed text-muted-foreground'>
+            <p className='text-muted-foreground mt-2 max-w-xs text-sm leading-relaxed'>
               {profile.role} and {profile.discipline}, based in{' '}
               {profile.location}. Available for remote work.
             </p>
             {profile.availability.open && (
               <p className='mt-5 inline-flex items-center gap-2.5'>
-                <span aria-hidden className='bg-signal animate-pulse-dot h-1.5 w-1.5' />
+                <span
+                  aria-hidden
+                  className='bg-signal animate-pulse-dot h-1.5 w-1.5'
+                />
                 <span className='eyebrow text-foreground'>
                   {profile.availability.label}
                 </span>
@@ -44,7 +59,7 @@ export function SiteFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className='link-underline text-sm text-muted-foreground transition-colors hover:text-foreground'
+                      className='link-underline text-muted-foreground hover:text-foreground text-sm transition-colors'
                     >
                       {link.name}
                     </Link>
@@ -63,10 +78,10 @@ export function SiteFooter() {
                     href={social.href}
                     target={social.name === 'Email' ? undefined : '_blank'}
                     rel='noreferrer'
-                    className='group flex items-baseline justify-between gap-4 text-sm text-muted-foreground transition-colors hover:text-foreground'
+                    className='group text-muted-foreground hover:text-foreground flex items-baseline justify-between gap-4 text-sm transition-colors'
                   >
                     <span className='link-underline'>{social.name}</span>
-                    <span className='truncate font-mono text-xs text-foreground/35'>
+                    <span className='text-foreground/35 truncate font-mono text-xs'>
                       {social.handle}
                     </span>
                   </a>
@@ -77,10 +92,10 @@ export function SiteFooter() {
                   href={profile.resumeUrl}
                   target='_blank'
                   rel='noreferrer'
-                  className='flex items-baseline justify-between gap-4 text-sm text-muted-foreground transition-colors hover:text-foreground'
+                  className='text-muted-foreground hover:text-foreground flex items-baseline justify-between gap-4 text-sm transition-colors'
                 >
                   <span className='link-underline'>View CV</span>
-                  <span className='font-mono text-xs text-foreground/35'>
+                  <span className='text-foreground/35 font-mono text-xs'>
                     PDF
                   </span>
                 </a>
@@ -89,14 +104,18 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className='rule mt-14 flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between'>
+        <p className='eyebrow mt-14 break-words'>
+          <span className='text-signal'>usage</span> {JSON.stringify(usage)}
+        </p>
+
+        <div className='rule mt-4 flex flex-col gap-3 pt-6 sm:flex-row sm:items-center sm:justify-between'>
           <p className='eyebrow'>
             &copy; {new Date().getFullYear()} {profile.name}
           </p>
           <div className='flex items-center gap-6'>
             <Link
               href='/privacy'
-              className='eyebrow transition-colors hover:text-foreground'
+              className='eyebrow hover:text-foreground transition-colors'
             >
               Privacy
             </Link>

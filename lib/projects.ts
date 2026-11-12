@@ -54,6 +54,16 @@ export async function getClientProjects(): Promise<ProjectMetadata[]> {
   return projects.filter(project => project.category !== 'internal')
 }
 
+/** The named projects, in the order given. Unknown slugs are skipped. */
+export async function getProjectsBySlugs(
+  slugs: readonly string[]
+): Promise<ProjectMetadata[]> {
+  const projects = await getProjects()
+  return slugs
+    .map(slug => projects.find(project => project.slug === slug))
+    .filter(project => project !== undefined)
+}
+
 export async function getProjects(limit?: number): Promise<ProjectMetadata[]> {
   const files = fs.readdirSync(rootDirectory)
 

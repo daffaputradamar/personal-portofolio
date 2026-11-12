@@ -1,64 +1,94 @@
 import Link from 'next/link'
 import { ArrowUpRight } from 'lucide-react'
 
-import { profile } from '@/lib/resume'
-import { Magnetic } from './magnetic'
-import { Reveal } from './reveal'
-import { TextReveal } from './text-reveal'
+import { profile, socials } from '@/lib/resume'
+import { AgentBuild } from './agent-build'
+import { ToolCall } from './tool-call'
 
-/** Closing block of the sheet. The last thing a reader sees before the footer. */
+/** Closing block: contact.md. The last thing a reader sees before the footer. */
 export function ContactCta() {
   return (
-    <section id='contact' className='container pt-10 pb-24 md:pb-32'>
-      <div className='tick-rule' />
+    <section id='contact' className='home-col scroll-mt-20 lg:scroll-mt-6'>
+      <AgentBuild
+        speed={1.8}
+        className='border-line border-t pt-12 pb-24 md:pt-14 md:pb-28'
+      >
+        <div className='flex flex-wrap items-end justify-between gap-x-6 gap-y-2'>
+          <p className='file-tab agent-place' data-agent-label='tab'>
+            contact.md
+          </p>
+          <ToolCall
+            call='read_file("contact.md")'
+            result={profile.availability.label.toLowerCase()}
+          />
+        </div>
 
-      <div className='mt-4 flex items-baseline justify-between gap-6'>
-        <p className='eyebrow text-foreground'>
-          <span className='text-signal'>[07]</span> Contact
-        </p>
-        <span className='eyebrow inline-flex items-center gap-2'>
-          <span aria-hidden className='bg-signal animate-pulse-dot h-1.5 w-1.5' />
-          {profile.availability.label}
-        </span>
-      </div>
+        <div
+          className='agent-place mt-6 flex items-baseline gap-4'
+          data-agent-label='heading'
+        >
+          <span aria-hidden className='md-mark text-lg'>
+            ##
+          </span>
+          <h2 className='display text-display'>Say hello.</h2>
+        </div>
 
-      <h2 className='display text-display mt-12 max-w-3xl uppercase md:mt-16'>
-        <TextReveal text='Let’s work' block />
-        <span className='text-signal block'>
-          <TextReveal text='together.' delay={0.14} block />
-        </span>
-      </h2>
+        <div className='agent-place' data-agent-label='text'>
+          <p className='mt-5 max-w-[28em]'>
+            I&rsquo;m open to new roles and interesting problems. Building an AI
+            platform or a web application? Tell me what you have in mind.
+          </p>
+        </div>
 
-      <Reveal delay={0.12}>
-        <p className='text-muted-foreground mt-8 max-w-md text-sm leading-relaxed'>
-          Building an AI platform or web application? Tell me what you have in
-          mind.
-        </p>
-      </Reveal>
+        <div className='agent-place' data-agent-label='buttons'>
+          <div className='mt-8 flex flex-wrap items-center gap-x-7 gap-y-4'>
+            <a
+              href={`mailto:${profile.email}`}
+              className='bg-foreground text-background inline-flex max-w-full flex-wrap items-center gap-3.5 rounded-lg px-6 py-4 font-mono text-[0.9375rem] break-all'
+            >
+              <span aria-hidden className='opacity-55'>
+                $
+              </span>
+              mail {profile.email}
+            </a>
 
-      <Reveal delay={0.2}>
-        <div className='mt-10 flex flex-wrap items-center gap-6'>
-          <Magnetic>
             <Link
               href='/contact'
-              className='group bg-foreground text-background inline-flex items-center gap-4 px-6 py-3.5 text-sm'
+              className='link-underline inline-flex items-center gap-2 py-1 text-sm'
             >
-              Start a conversation
-              <ArrowUpRight
-                aria-hidden
-                className='h-4 w-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5'
-              />
+              or use the contact form
+              <ArrowUpRight aria-hidden className='h-4 w-4' />
             </Link>
-          </Magnetic>
+          </div>
 
-          <a
-            href={`mailto:${profile.email}`}
-            className='link-underline py-2 font-mono text-sm'
-          >
-            {profile.email}
-          </a>
+          <ul className='eyebrow mt-7 flex flex-wrap gap-x-6 gap-y-2'>
+            {socials
+              .filter(social => social.name !== 'Email')
+              .map(social => (
+                <li key={social.name}>
+                  <a
+                    href={social.href}
+                    target='_blank'
+                    rel='noreferrer'
+                    className='hover:text-foreground transition-colors'
+                  >
+                    {social.name}
+                  </a>
+                </li>
+              ))}
+            <li>
+              <a
+                href={profile.resumeUrl}
+                target='_blank'
+                rel='noreferrer'
+                className='hover:text-foreground transition-colors'
+              >
+                CV (PDF)
+              </a>
+            </li>
+          </ul>
         </div>
-      </Reveal>
+      </AgentBuild>
     </section>
   )
 }

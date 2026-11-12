@@ -1,21 +1,20 @@
-import { About } from '@/components/site/about'
-import { Background } from '@/components/site/background'
 import { ContactCta } from '@/components/site/contact-cta'
-import { Experience } from '@/components/site/experience'
-import { Hero } from '@/components/site/hero'
-import { SelectedWork } from '@/components/site/selected-work'
-import { Stack } from '@/components/site/stack'
-import { Writing } from '@/components/site/writing'
+import { Background } from '@/components/site/home/background'
+import { Hero } from '@/components/site/home/hero'
+import { Platform } from '@/components/site/home/platform'
+import { Skills } from '@/components/site/home/skills'
+import { Work } from '@/components/site/home/work'
+import { Writing } from '@/components/site/home/writing'
 import { getResumeSize } from '@/lib/resume-file'
 
+/** README.md: the home page, read top to bottom like a repository's readme. */
 export default function Home() {
   return (
     <>
       <Hero cvSize={getResumeSize()} />
-      <SelectedWork />
-      <About />
-      <Stack />
-      <Experience />
+      <Platform />
+      <Work />
+      <Skills />
       <Background />
       <Writing />
       <ContactCta />

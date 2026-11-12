@@ -1,0 +1,49 @@
+---
+title: 'The Job Looker'
+summary: 'A multi-user job finder for Indonesia, Southeast Asia and remote work that reads every listing against your CV with an LLM.'
+problem: 'Job listings are scattered across APIs, company boards and sites with no feed, and most of them are not a fit. Reading them all by hand is the slow part of a search.'
+outcome: 'Listings are gathered once and shared by every user; each person gets their own ranked deck to swipe, pin and track, with strong matches sent to Telegram.'
+image: /images/projects/job-looker.png
+link: https://job-looker.daffaputradamar.my.id
+author: 'Daffa Akbar'
+publishedAt: '2026-11-11'
+role: 'Personal project'
+tech: ['Next.js', 'TypeScript', 'PostgreSQL', 'pgvector', 'Drizzle', 'pg-boss', 'Claude API', 'Telegram']
+---
+
+**The Job Looker** is a multi-user job finder for Indonesia, Southeast Asia and remote work. It gathers listings from job APIs, company boards and scraped sites, reads each one against your CV with an LLM, and lets you swipe, pin and track applications. Strong matches can be sent to you on Telegram.
+
+## How it works
+
+- **Gathering**: source adapters pull from public job APIs, company applicant-tracking boards and scraped sites on a schedule. Jobs are fetched once and shared by everyone, so adding users does not multiply the scraping.
+- **Matching**: an uploaded CV is parsed into a structured profile. New listings are narrowed with vector search first, then scored against the profile by an LLM that returns validated, structured output.
+- **Deciding**: matches arrive as a deck to swipe through. Anything worth a second look can be pinned, and applications are tracked in a ledger.
+- **Notifying**: a Telegram bot sends the strong matches, so the search keeps going without opening the app.
+
+## Features
+
+- **Multi-user with approval**: anyone can sign up, but an account is active only after an admin approves it. The first account becomes the admin.
+- **English and Bahasa Indonesia**: the whole interface is available in both languages.
+- **Admin view**: per-source schedules and health, with a "run now" for each source.
+- **Phone layouts**: the deck, job pages, ledger and admin all work on a phone, and the app installs as a PWA.
+
+## Architecture
+
+The repository is a small monorepo: a Next.js web app, a worker that does the fetching, embedding, matching and Telegram work, a shared database package and a core package holding the source adapters and matching logic.
+
+Postgres is the single source of truth. It stores the jobs, holds the embeddings through pgvector, and also hosts the job queue through pg-boss, so there is no Redis to run.
+
+## Running it
+
+It runs two ways from the same code:
+
+- **For free**: the web app on Vercel, the database on Neon, and an hourly GitHub Actions job for fetching and matching. Telegram reaches the app through a webhook.
+- **On a small server**: everything in Docker Compose, sized to fit a 1 GB VPS.
+
+## Tech stack
+
+- **Web**: Next.js, TypeScript, Tailwind CSS, shadcn/ui, Clerk, next-intl
+- **Data**: PostgreSQL, pgvector, Drizzle ORM, pg-boss
+- **AI**: Claude for CV reading and scoring, Voyage AI for embeddings
+- **Bot**: grammY for Telegram
+- **Delivery**: Docker Compose, Vercel, Neon, GitHub Actions

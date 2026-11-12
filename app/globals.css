@@ -39,12 +39,11 @@
    ------------------------------------------------------------------ */
 
 @theme {
-  /* IBM Plex: a superfamily built for engineering documentation, which is
-     exactly the register this site is going for. */
-  --font-sans: var(--font-sans), ui-sans-serif, system-ui, -apple-system,
-    sans-serif;
-  --font-display: var(--font-display), var(--font-sans), ui-sans-serif,
-    system-ui, sans-serif;
+  /* Newsreader for everything that is read, JetBrains Mono for the small
+     developer marks: file names, heading hashes, stack lists. */
+  --font-sans: var(--font-serif), ui-serif, Georgia, 'Times New Roman', serif;
+  --font-display: var(--font-serif), ui-serif, Georgia, 'Times New Roman',
+    serif;
   --font-mono: var(--font-mono), ui-monospace, SFMono-Regular, Menlo, Consolas,
     monospace;
 
@@ -83,39 +82,39 @@
   /* Reading sizes, one step up from the Tailwind defaults with looser leading. */
   --text-xs: 0.8125rem;
   --text-xs--line-height: 1.6;
-  --text-sm: 0.9375rem;
-  --text-sm--line-height: 1.65;
-  --text-base: 1rem;
-  --text-base--line-height: 1.7;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 1.6;
+  --text-sm: 1.0625rem;
+  --text-sm--line-height: 1.6;
+  --text-base: 1.1875rem;
+  --text-base--line-height: 1.6;
+  --text-lg: 1.3125rem;
+  --text-lg--line-height: 1.5;
 
-  /* Display scale — condensed grotesque, set tight and often uppercase. */
-  --text-hero: clamp(2.75rem, 8.5vw, 7.5rem);
-  --text-hero--line-height: 0.92;
-  --text-hero--letter-spacing: -0.02em;
+  /* Display scale: a reading serif, set large and in sentence case. */
+  --text-hero: clamp(3.25rem, 7.4vw, 6.75rem);
+  --text-hero--line-height: 0.98;
+  --text-hero--letter-spacing: -0.03em;
 
-  --text-display: clamp(2.25rem, 5.5vw, 4.5rem);
-  --text-display--line-height: 0.96;
-  --text-display--letter-spacing: -0.015em;
+  --text-display: clamp(2.75rem, 6vw, 5.25rem);
+  --text-display--line-height: 1.02;
+  --text-display--letter-spacing: -0.03em;
 
-  --text-headline: clamp(1.75rem, 3.4vw, 2.75rem);
-  --text-headline--line-height: 1.05;
-  --text-headline--letter-spacing: -0.01em;
+  --text-headline: clamp(2.125rem, 4vw, 3.25rem);
+  --text-headline--line-height: 1.1;
+  --text-headline--letter-spacing: -0.02em;
 
-  --text-lead: clamp(1.0625rem, 1.5vw, 1.25rem);
-  --text-lead--line-height: 1.6;
+  --text-lead: clamp(1.3125rem, 2vw, 1.625rem);
+  --text-lead--line-height: 1.4;
 
-  /* Mono is already wide, so labels need far less tracking than a sans would. */
-  --text-label: 0.75rem;
-  --text-label--line-height: 1.5;
-  --text-label--letter-spacing: 0.09em;
+  /* Mono marks: file names, dates, stack lists. */
+  --text-label: 0.8125rem;
+  --text-label--line-height: 1.6;
+  --text-label--letter-spacing: 0em;
 
-  /* A datasheet has no rounded corners. */
-  --radius: 0px;
-  --radius-lg: 0px;
-  --radius-md: 0px;
-  --radius-sm: 0px;
+  /* Paper, not a datasheet: corners are barely softened. */
+  --radius: 6px;
+  --radius-lg: 8px;
+  --radius-md: 6px;
+  --radius-sm: 4px;
 
   --ease-editorial: cubic-bezier(0.22, 1, 0.36, 1);
 
@@ -140,59 +139,61 @@
 
 @layer base {
   :root {
-    --background: 40 14% 96%;
-    --foreground: 30 6% 12%;
-    --surface: 40 10% 92%;
-    --elevated: 0 0% 100%;
-    --line: 35 8% 80%;
-    --border: 35 8% 80%;
-    --input: 35 8% 74%;
-    --ring: 24 88% 45%;
+    --background: 42 56% 96.5%;
+    --foreground: 43 13% 12%;
+    --surface: 42 40% 92%;
+    --elevated: 43 100% 98.5%;
+    --line: 41 32% 85%;
+    --border: 41 32% 85%;
+    --input: 41 26% 76%;
+    --ring: 18 62% 43%;
 
-    /* Signal orange: the annotation colour of technical drawings, and
-       pointedly not the emerald every generated portfolio ships with. */
-    --signal: 24 88% 45%;
+    /* Rust: the one accent, used for emphasis and the agent's marks. */
+    --signal: 18 62% 43%;
+    /* Faint mono marks beside headings. Decorative, never the only label. */
+    --mark: 41 23% 72%;
 
-    --primary: 24 88% 45%;
-    --primary-foreground: 40 14% 96%;
-    --secondary: 40 10% 90%;
-    --secondary-foreground: 30 6% 14%;
-    --muted: 40 10% 90%;
-    --muted-foreground: 32 5% 40%;
-    --accent: 40 10% 90%;
-    --accent-foreground: 30 6% 14%;
-    --card: 0 0% 100%;
-    --card-foreground: 30 6% 12%;
+    --primary: 18 62% 43%;
+    --primary-foreground: 43 100% 97%;
+    --secondary: 42 40% 90%;
+    --secondary-foreground: 43 13% 14%;
+    --muted: 42 40% 90%;
+    --muted-foreground: 38 9% 39%;
+    --accent: 42 40% 90%;
+    --accent-foreground: 43 13% 14%;
+    --card: 43 100% 98.5%;
+    --card-foreground: 43 13% 12%;
     --destructive: 4 70% 44%;
-    --destructive-foreground: 40 14% 96%;
+    --destructive-foreground: 43 100% 97%;
 
     color-scheme: light;
   }
 
   .dark {
-    --background: 35 6% 6%;
-    --foreground: 40 12% 92%;
-    --surface: 35 5% 9%;
-    --elevated: 35 5% 12%;
-    --line: 35 5% 18%;
-    --border: 35 5% 18%;
-    --input: 35 5% 22%;
-    --ring: 26 95% 58%;
+    --background: 34 9% 9%;
+    --foreground: 40 32% 90%;
+    --surface: 34 8% 12.5%;
+    --elevated: 34 8% 15%;
+    --line: 34 8% 21%;
+    --border: 34 8% 21%;
+    --input: 34 8% 26%;
+    --ring: 21 78% 63%;
 
-    --signal: 26 95% 58%;
+    --signal: 21 78% 63%;
+    --mark: 34 8% 36%;
 
-    --primary: 26 95% 58%;
-    --primary-foreground: 35 10% 7%;
-    --secondary: 35 5% 15%;
-    --secondary-foreground: 40 12% 92%;
-    --muted: 35 5% 14%;
-    --muted-foreground: 38 6% 56%;
-    --accent: 35 5% 15%;
-    --accent-foreground: 40 12% 92%;
-    --card: 35 5% 9%;
-    --card-foreground: 40 12% 92%;
-    --destructive: 4 65% 54%;
-    --destructive-foreground: 40 12% 92%;
+    --primary: 21 78% 63%;
+    --primary-foreground: 34 12% 8%;
+    --secondary: 34 8% 16%;
+    --secondary-foreground: 40 32% 90%;
+    --muted: 34 8% 15%;
+    --muted-foreground: 38 12% 64%;
+    --accent: 34 8% 16%;
+    --accent-foreground: 40 32% 90%;
+    --card: 34 8% 12.5%;
+    --card-foreground: 40 32% 90%;
+    --destructive: 4 65% 58%;
+    --destructive-foreground: 40 32% 90%;
 
     color-scheme: dark;
   }
@@ -259,38 +260,323 @@
    ------------------------------------------------------------------ */
 
 @layer components {
-  /* Small uppercase mono label — carries every field name and index. */
+  /* Reading column for the home page and other document-style blocks. */
+  .home-col {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+    max-width: 68rem;
+  }
+  @media (width >= 768px) {
+    .home-col {
+      padding-inline: 3rem;
+    }
+  }
+  @media (width >= 1280px) {
+    .home-col {
+      padding-inline: 4.5rem;
+    }
+  }
+
+  /* Small mono label: file names, dates, field names. */
   .eyebrow {
     font-family: var(--font-mono);
     font-size: var(--text-label);
     line-height: var(--text-label--line-height);
     letter-spacing: var(--text-label--letter-spacing);
-    text-transform: uppercase;
     color: hsl(var(--muted-foreground));
   }
 
-  /* Condensed grotesque for display sizes — replaces the display serif. */
+  /* Display sizes: the reading serif at a medium weight. */
   .display {
     font-family: var(--font-display);
-    font-weight: 600;
+    font-weight: 500;
+    letter-spacing: -0.02em;
   }
 
-  /* A ruled scale: hairline with ticks hanging below it at a fixed pitch. */
+  /* Kept as a plain hairline for the inner pages that still use it. */
   .tick-rule {
-    position: relative;
-    height: 5px;
     border-top: 1px solid hsl(var(--line));
   }
-  .tick-rule::after {
-    content: '';
+
+  /* The file tab that sits above a section, like an open editor tab. */
+  .file-tab {
+    display: inline-block;
+    padding: 0.375rem 0.875rem;
+    border: 1px solid hsl(var(--line));
+    border-bottom: 2px solid hsl(var(--signal));
+    border-radius: 8px 8px 0 0;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+
+  /* The faint hash marks beside headings. */
+  .md-mark {
+    font-family: var(--font-mono);
+    color: hsl(var(--mark));
+    user-select: none;
+  }
+
+  /* Two-part README badge. */
+  .badge {
+    display: inline-flex;
+    overflow: hidden;
+    border-radius: 5px;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    line-height: 1.5;
+  }
+  .badge > span {
+    padding: 0.3125rem 0.625rem;
+  }
+  .badge > span:first-child {
+    background: hsl(var(--foreground));
+    color: hsl(var(--background));
+  }
+  .badge > span:last-child {
+    background: hsl(var(--surface));
+  }
+  .badge.badge-signal > span:last-child {
+    background: hsl(var(--signal));
+    color: hsl(var(--primary-foreground));
+  }
+
+  /* Agent build-in: a cursor that frames each block, then places it. */
+  .agent-layer {
     position: absolute;
-    inset: 0 0 auto 0;
-    height: 4px;
-    background-image: repeating-linear-gradient(
-      to right,
-      hsl(var(--line)) 0 1px,
-      transparent 1px 16px
+    inset: 0;
+    z-index: 30;
+    pointer-events: none;
+    overflow: visible;
+  }
+  .agent-frame {
+    position: absolute;
+    top: 0;
+    left: 0;
+    border: 1.5px dashed hsl(var(--signal));
+    border-radius: 4px;
+    background: hsl(var(--signal) / 0.06);
+    opacity: 0;
+  }
+  .agent-cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 2px;
+    color: hsl(var(--signal));
+  }
+  .agent-cursor svg {
+    width: 20px;
+    height: 20px;
+    flex: none;
+    filter: drop-shadow(0 2px 3px hsl(var(--foreground) / 0.25));
+  }
+  .agent-cursor span {
+    margin-top: 14px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: hsl(var(--signal));
+    color: hsl(var(--primary-foreground));
+    font-family: var(--font-mono);
+    font-size: 11px;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  /* Platform map: an edge between two tiers, and the packet that travels it.
+     Vertical by default, because the tiers stack on phones; `wide` turns it
+     horizontal from md up. `flip` reverses what counts as forward on phones,
+     for the one edge whose far end sits above there. */
+  .infra-edge {
+    position: relative;
+    display: block;
+    width: 1px;
+    height: 2.75rem;
+    background: hsl(var(--line));
+  }
+  .infra-packet {
+    position: absolute;
+    left: -3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: hsl(var(--signal));
+    box-shadow: 0 0 0 3px hsl(var(--signal) / 0.18);
+    animation: infra-down 0.95s cubic-bezier(0.45, 0, 0.55, 1) both;
+  }
+  .infra-packet.back,
+  .infra-edge.flip .infra-packet {
+    animation-name: infra-up;
+  }
+  .infra-edge.flip .infra-packet.back {
+    animation-name: infra-down;
+  }
+  @media (width >= 768px) {
+    .infra-edge.flip .infra-packet {
+      animation-name: infra-down;
+    }
+    .infra-edge.flip .infra-packet.back {
+      animation-name: infra-up;
+    }
+    .infra-edge.wide {
+      width: 100%;
+      height: 1px;
+    }
+    .infra-edge.wide .infra-packet {
+      left: 0;
+      top: -3px;
+      animation-name: infra-right;
+    }
+    .infra-edge.wide .infra-packet.back {
+      animation-name: infra-left;
+    }
+  }
+  @keyframes infra-down {
+    from {
+      top: 0;
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    to {
+      top: calc(100% - 7px);
+      opacity: 0;
+    }
+  }
+  @keyframes infra-up {
+    from {
+      top: calc(100% - 7px);
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    to {
+      top: 0;
+      opacity: 0;
+    }
+  }
+  @keyframes infra-right {
+    from {
+      left: 0;
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    to {
+      left: calc(100% - 7px);
+      opacity: 0;
+    }
+  }
+  @keyframes infra-left {
+    from {
+      left: calc(100% - 7px);
+      opacity: 0;
+    }
+    15%,
+    85% {
+      opacity: 1;
+    }
+    to {
+      left: 0;
+      opacity: 0;
+    }
+  }
+  /* Streaming text: the caret that rides on the newest word. */
+  .stream-cur::after {
+    content: '';
+    display: inline-block;
+    width: 0.45em;
+    height: 0.95em;
+    margin-left: 0.18em;
+    vertical-align: -0.1em;
+    background: hsl(var(--signal));
+    animation: caret 0.9s steps(1) infinite;
+  }
+  @keyframes caret {
+    50% {
+      opacity: 0;
+    }
+  }
+
+  /* A highlighter stroke through the lower part of a line of text. */
+  .hl-stroke {
+    padding: 0 0.12em;
+    background-image: linear-gradient(
+      transparent 56%,
+      hsl(var(--signal) / 0.24) 56%,
+      hsl(var(--signal) / 0.24) 92%,
+      transparent 92%
     );
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone;
+  }
+
+  /* A citation marker, and the ring it puts on what it cites. */
+  .cite {
+    padding: 0 0.15em;
+    font-family: var(--font-mono);
+    font-size: 0.72em;
+    color: hsl(var(--signal));
+    text-decoration: none;
+  }
+  .cite:hover,
+  .cite:focus-visible {
+    text-decoration: underline;
+  }
+  .cite-hit {
+    outline: 2px solid hsl(var(--signal));
+    outline-offset: 3px;
+  }
+
+  .typing-dots {
+    display: inline-flex;
+    gap: 3px;
+    vertical-align: middle;
+  }
+  .typing-dots i {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: currentColor;
+    animation: typing 1s ease-in-out infinite;
+  }
+  .typing-dots i:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  .typing-dots i:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+  @keyframes typing {
+    0%,
+    100% {
+      opacity: 0.25;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+  .log-line {
+    animation: log-in 0.35s var(--ease-editorial) both;
+  }
+  @keyframes log-in {
+    from {
+      opacity: 0;
+      transform: translateY(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
   }
 
   /* Graph-paper ground for the title block. Faint, and masked off before it
@@ -573,7 +859,8 @@
    reduced motion. A <noscript> rule in the layout restores them without JS. */
 @media (prefers-reduced-motion: no-preference) {
   .gsap-reveal,
-  .gsap-split {
+  .gsap-split,
+  .agent-place {
     visibility: hidden;
   }
 }

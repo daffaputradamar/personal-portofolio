@@ -14,10 +14,9 @@ type PageHeaderProps = {
 /** Masthead for the inner routes. Mirrors the home page's section rhythm. */
 export function PageHeader({ eyebrow, title, lede, aside }: PageHeaderProps) {
   return (
-    <header className='container pt-32 pb-14 md:pt-40 md:pb-20'>
+    <header className='container pt-32 pb-14 md:pt-40 md:pb-20 lg:pt-16'>
       <Reveal offset={12}>
-        <div className='tick-rule mb-5 w-40' />
-        <p className='eyebrow text-signal'>{eyebrow}</p>
+        <p className='file-tab'>{eyebrow.toLowerCase()}/</p>
       </Reveal>
 
       <div className='mt-6 grid gap-8 md:grid-cols-12 md:items-end'>
@@ -28,7 +27,7 @@ export function PageHeader({ eyebrow, title, lede, aside }: PageHeaderProps) {
         <div className='md:col-span-5 md:pb-2'>
           {lede && (
             <Reveal delay={0.2}>
-              <p className='max-w-md text-base leading-relaxed text-muted-foreground'>
+              <p className='text-muted-foreground max-w-md text-base leading-relaxed'>
                 {lede}
               </p>
             </Reveal>

@@ -1,9 +1,5 @@
 import type { Metadata, Viewport } from 'next'
-import {
-  IBM_Plex_Mono,
-  IBM_Plex_Sans,
-  IBM_Plex_Sans_Condensed
-} from 'next/font/google'
+import { JetBrains_Mono, Newsreader } from 'next/font/google'
 
 import { cn } from '@/lib/utils'
 import { profile } from '@/lib/resume'
@@ -11,8 +7,7 @@ import { profile } from '@/lib/resume'
 import 'lenis/dist/lenis.css'
 import './globals.css'
 import Providers from '@/components/providers'
-import { Nav } from '@/components/site/nav'
-import { getResumeSize } from '@/lib/resume-file'
+import { Sidebar } from '@/components/site/sidebar'
 import { siteGraph } from '@/lib/structured-data'
 import { JsonLd } from '@/components/json-ld'
 import { SiteFooter } from '@/components/site/site-footer'
@@ -20,26 +15,16 @@ import { Grain } from '@/components/site/grain'
 import { ScrollProgress } from '@/components/site/scroll-progress'
 import { SmoothScroll } from '@/components/site/smooth-scroll'
 
-// IBM Plex was cut for engineering documentation, so the whole superfamily
-// carries the datasheet register the site is built around.
-const sans = IBM_Plex_Sans({
+// Newsreader carries everything that is read, at every size.
+const serif = Newsreader({
   subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-sans',
+  style: ['normal', 'italic'],
+  variable: '--font-serif',
   display: 'swap'
 })
 
-// Display sizes: condensed rather than a display serif, which is the pairing
-// every generated portfolio ships with.
-const display = IBM_Plex_Sans_Condensed({
-  subsets: ['latin'],
-  weight: ['600', '700'],
-  variable: '--font-display',
-  display: 'swap'
-})
-
-// Carries every field label, index and figure on the site.
-const mono = IBM_Plex_Mono({
+// The small developer marks: file names, heading hashes, stack lists.
+const mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400', '500'],
   variable: '--font-mono',
@@ -106,10 +91,10 @@ export const metadata: Metadata = {
 }
 
 export const viewport: Viewport = {
-  // The site opens dark regardless of the OS setting, so the browser chrome
-  // matches the dark palette rather than following prefers-color-scheme.
-  themeColor: '#0d0d0c',
-  colorScheme: 'dark light'
+  // The site opens on warm paper regardless of the OS setting, so the browser
+  // chrome matches the light palette rather than following the system.
+  themeColor: '#fbf8f1',
+  colorScheme: 'light dark'
 }
 
 export default function RootLayout({
@@ -123,14 +108,13 @@ export default function RootLayout({
         {/* Reveal animations hide content until GSAP runs; without JS, show it. */}
         <JsonLd data={siteGraph()} />
         <noscript>
-          <style>{`.gsap-reveal,.gsap-split{visibility:visible!important}`}</style>
+          <style>{`.gsap-reveal,.gsap-split,.agent-place{visibility:visible!important}`}</style>
         </noscript>
       </head>
       <body
         className={cn(
-          'flex min-h-screen flex-col font-sans antialiased',
-          sans.variable,
-          display.variable,
+          'min-h-screen font-sans antialiased',
+          serif.variable,
           mono.variable
         )}
       >
@@ -144,13 +128,17 @@ export default function RootLayout({
 
           <SmoothScroll />
           <ScrollProgress />
-          <Nav cvSize={getResumeSize()} />
+          <div className='mx-auto flex w-full max-w-[92rem]'>
+            <Sidebar />
 
-          <main id='main' className='relative z-10 grow'>
-            {children}
-          </main>
+            <div className='flex min-h-screen min-w-0 grow flex-col overflow-x-clip pb-12 lg:pb-0'>
+              <main id='main' className='relative z-10 grow'>
+                {children}
+              </main>
 
-          <SiteFooter />
+              <SiteFooter />
+            </div>
+          </div>
           <Grain />
         </Providers>
       </body>

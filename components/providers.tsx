@@ -5,12 +5,12 @@ import { Toaster } from '@/components/ui/sonner'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   return (
-    // Dark by default whatever the OS is set to; the toggle still switches it
+    // Light paper by default whatever the OS is set to; the toggle still switches it
     // and next-themes remembers the visitor's choice.
     <ThemeProvider
       enableSystem={false}
       attribute='class'
-      defaultTheme='dark'
+      defaultTheme='light'
       disableTransitionOnChange
     >
       {children}
