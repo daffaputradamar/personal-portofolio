@@ -1,44 +1,35 @@
 import Link from 'next/link'
+import { ArrowUpRight } from 'lucide-react'
 
 import { getProjects } from '@/lib/projects'
 import { AgentBuild } from '../agent-build'
 import { Cite } from '../cite'
 import { DocSection } from '../doc-section'
-import { PlatformTrace } from '../platform-trace'
-import { PLATFORM_SLUGS } from './featured'
+import { PlatformMap } from '../platform-map'
+import { ProjectGroups, type ProjectGroup } from '../project-groups'
+import { Reveal } from '../reveal'
+import { PLATFORM_GROUPS } from './featured'
 
-function Tick() {
-  return (
-    <svg
-      viewBox='0 0 22 22'
-      aria-hidden
-      className='mt-2 h-[1.375rem] w-[1.375rem] shrink-0'
-      fill='none'
-    >
-      <rect
-        x='1.5'
-        y='1.5'
-        width='19'
-        height='19'
-        rx='4'
-        stroke='currentColor'
-        strokeWidth='1.5'
-      />
-      <path
-        d='M6 11.5l3.4 3.4L16 7.8'
-        className='stroke-signal'
-        strokeWidth='2.2'
-      />
-    </svg>
-  )
-}
-
-/** The in-house AI platform: how it fits together, then the systems on it. */
+/** The in-house AI platform: how it fits together, then what runs on it. */
 export async function Platform() {
   const all = await getProjects()
-  const systems = PLATFORM_SLUGS.map(slug =>
-    all.find(project => project.slug === slug)
-  ).filter(project => project !== undefined)
+
+  // Each group with the projects that have a write-up, in the listed order.
+  const groups: ProjectGroup[] = PLATFORM_GROUPS.map(group => ({
+    title: group.title,
+    dir: group.dir,
+    body: group.body,
+    glyph: group.glyph,
+    node: group.node,
+    projects: group.slugs.flatMap(slug => {
+      const project = all.find(item => item.slug === slug)
+      return project?.title && project.summary
+        ? [{ slug, title: project.title, summary: project.summary }]
+        : []
+    })
+  })).filter(group => group.projects.length > 0)
+
+  const total = groups.reduce((n, group) => n + group.projects.length, 0)
 
   return (
     <DocSection
@@ -46,7 +37,7 @@ export async function Platform() {
       file='platform/'
       title='At work: the AI platform at MPM'
       call='list_dir("platform/")'
-      result={`${systems.length} systems`}
+      result={`${total} projects`}
     >
       <AgentBuild speed={2}>
         <blockquote
@@ -73,39 +64,24 @@ export async function Platform() {
         </p>
 
         <div className='agent-place mt-7' data-agent-label='figure'>
-          <PlatformTrace />
+          <PlatformMap />
         </div>
       </AgentBuild>
 
-      <AgentBuild speed={2.2} className='mt-9'>
-        <ul>
-          {systems.map(system => (
-            <li
-              key={system.slug}
-              className='agent-place'
-              data-agent-label='system'
-            >
-              <Link
-                href={`/projects/${system.slug}`}
-                className='border-line group flex gap-4 border-t py-5'
-              >
-                <Tick />
-                <div className='flex min-w-0 flex-1 flex-wrap items-baseline gap-x-9 gap-y-1.5'>
-                  <h3 className='display group-hover:text-signal flex-[1_1_15rem] text-[1.6875rem] leading-[1.2] transition-colors duration-300'>
-                    {system.title}
-                  </h3>
-                  <div className='flex-[2_1_24rem]'>
-                    <p>{system.outcome ?? system.summary}</p>
-                    {system.tech && (
-                      <p className='eyebrow mt-2'>{system.tech.join(' · ')}</p>
-                    )}
-                  </div>
-                </div>
-              </Link>
-            </li>
-          ))}
-        </ul>
+      {/* What runs on it, by kind rather than one at a time. */}
+      <AgentBuild speed={2} agents={2} className='mt-10'>
+        <ProjectGroups groups={groups} />
       </AgentBuild>
+
+      <Reveal>
+        <Link
+          href='/projects'
+          className='link-underline mt-8 inline-flex items-center gap-2 text-sm'
+        >
+          Every project, with its write-up
+          <ArrowUpRight aria-hidden className='h-4 w-4' />
+        </Link>
+      </Reveal>
     </DocSection>
   )
 }
