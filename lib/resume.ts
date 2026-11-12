@@ -36,7 +36,7 @@ export const profile = {
    */
   phone: '+62 857-5555-7954',
   resumeUrl: '/docs/cv-daffa.pdf',
-  siteUrl: 'https://portofoliodaffa.vercel.app'
+  siteUrl: 'https://daffaputradamar.my.id'
 } as const
 
 export const socials = [
