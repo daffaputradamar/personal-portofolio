@@ -1,0 +1,26 @@
+---
+title: 'Summary Blogger'
+summary: 'Collects articles from a set list of sites and tags each one by product, brand and type, to feed monthly media reporting.'
+problem: 'Article links and titles were gathered and categorised by hand every month for reporting.'
+outcome: 'Articles from the agreed sources are collected automatically and tagged by AI, ready to export for the report.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-21'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Playwright', 'BeautifulSoup', 'LangChain', 'FastAPI', 'Next.js', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+A collection tool for media reporting. It watches a defined list of sites and builds the dataset the monthly report is made from.
+
+## What it does
+
+- **Collection**: gathers the link and title of each new article from the listed sources.
+- **Tagging**: an LLM reads each article and records the product, brand, company and type it concerns.
+- **Fixed scope**: only the sources on the agreed list are monitored.
+- **Export**: the data comes out in the shape the reporting needs.
+
+## Approach
+
+Collection and interpretation are kept apart. Scraping produces a plain record of what was published; the model's tags are a layer on top that can be re-run or corrected without collecting everything again.

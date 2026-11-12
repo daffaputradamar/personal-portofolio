@@ -1,0 +1,26 @@
+---
+title: 'BTL Corrector'
+summary: 'Checks activity receipts against the rules they must follow and says exactly which part needs fixing.'
+problem: 'Receipts for promotional activity reports were opened and checked one by one, and a problem was only found once someone got to that document.'
+outcome: 'Each receipt is read and checked against the rules automatically, and comes back with a status and the specific part to correct or review.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-22'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['OCR', 'Flask', 'React', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+**BTL Corrector** validates the receipts attached to promotional activity reports. It reads each one and checks it against the rules, so reviewers look at the exceptions instead of every page.
+
+## What it does
+
+- **Wording check**: compares the receipt's wording with what the rules require.
+- **Figures and dates**: checks amounts and dates for consistency.
+- **Completeness**: looks for the stamp, signature and duty stamp a valid receipt needs.
+- **Actionable result**: returns a status with the part that needs to be corrected or reviewed.
+
+## Approach
+
+The rules are explicit and the output points at a location in the document. A reviewer can confirm a flagged problem in seconds, and the submitter knows what to fix without a back-and-forth.

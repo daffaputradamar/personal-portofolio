@@ -1,0 +1,26 @@
+---
+title: 'Claim Document Validation'
+summary: 'Verifies after-sales claim documents automatically: completeness, consistency across documents, and signs of tampering.'
+problem: 'Claim documents were verified by hand, which was slow, error-prone, and left room for incomplete or inconsistent paperwork to pass.'
+outcome: 'Each claim’s documents are checked together for completeness and agreement with one another, and suspicious ones are flagged for a person to review.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-09'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangChain', 'OpenCV', 'PyMuPDF', 'Flask', 'React', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+A verification step for after-sales claims. It reads the set of documents behind a claim and checks them as a set, not one at a time.
+
+## What it does
+
+- **Completeness**: confirms each document carries what makes it valid, such as a stamp, a signature and a duty stamp.
+- **Cross-document consistency**: compares the details that should match across the documents of one claim.
+- **Tax fields**: checks the tax figures a compliant invoice must carry.
+- **Fraud signals**: flags documents that look altered or reused.
+
+## Approach
+
+Most problems are not visible in a single document; they show up when two documents disagree. Reading every document into structured data first is what makes that comparison possible, and the result is a list of specific findings for a reviewer, not a bare pass or fail.

@@ -1,0 +1,27 @@
+---
+title: 'MyTOK Policy Assistant'
+summary: 'Chatbot over versioned company policies, with access by grade and department and AI summaries of what changed between versions.'
+problem: 'Policies lived in documents that changed over time, applied differently by grade, and were hard for employees to search or compare.'
+outcome: 'Employees ask in plain language and get answers from the policies they are allowed to see, with a summary of what a new version changed.'
+author: 'Daffa Akbar'
+publishedAt: '2026-04-28'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangGraph', 'LangChain', 'ChromaDB', 'FastAPI', 'React', 'PostgreSQL', 'Active Directory']
+confidential: true
+category: 'internal'
+---
+
+A policy assistant connected to the company's HR application. Employees ask about a policy in plain language; the assistant answers from the documents that apply to them.
+
+## What it does
+
+- **Access-aware retrieval**: document collections are visible by grade, by department, publicly or privately, and the assistant only retrieves from what the asker may see.
+- **Versions and revisions**: each policy keeps its history instead of being overwritten.
+- **What changed**: an AI summary compares two versions of a policy and states the differences.
+- **Directory sign-in**: users authenticate with the company directory, with an approval step before access is granted.
+- **Administration**: company records, users and an activity log are managed inside the tool.
+
+## Approach
+
+Access control is applied at retrieval, not after generation. A passage the asker is not entitled to never reaches the model, so it cannot leak into an answer.

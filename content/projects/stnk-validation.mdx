@@ -1,0 +1,26 @@
+---
+title: 'STNK Validation'
+summary: 'Checks uploaded vehicle registration and ownership documents for completeness, legibility and authenticity, with monitoring by period.'
+problem: 'Nothing checked automatically that an uploaded document photo was complete, readable and genuine, so problem documents surfaced late.'
+outcome: 'Uploads are checked as they arrive, and a period report shows which documents are still unsuitable or unfinished.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-16'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Image validation', 'Node.js', 'React', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+A validator for vehicle registration (STNK) and ownership (BPKB) documents uploaded by the network.
+
+## What it does
+
+- **Completeness**: confirms the required documents are present.
+- **Image quality**: checks that a photo is clear, readable and not cropped.
+- **Authenticity**: checks whether the registration photo is genuine.
+- **Monitoring**: a report by period lists documents that are not yet acceptable or not yet finished.
+
+## Approach
+
+Checking at upload moves the problem to the moment it can still be fixed cheaply, when the person with the document is still there, instead of weeks later during review.

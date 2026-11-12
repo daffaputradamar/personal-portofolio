@@ -1,0 +1,26 @@
+---
+title: 'KK Reader'
+summary: 'Reads Indonesian family cards (Kartu Keluarga) into structured data and checks the numbers against existing records.'
+problem: 'Family-card details were typed in by hand from photographs, and reading errors had to be corrected afterwards.'
+outcome: 'Cards are read and mapped into fields automatically, including the irregular ones, and card and identity numbers are checked against data already held.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-21'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['OCR', 'OpenCV', 'FastAPI', 'React', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+A reader for Indonesian family cards. It turns a photographed card into structured fields that can go straight into the dealer system, instead of being retyped.
+
+## What it does
+
+- **Reading**: extracts the card's fields and the members listed on it.
+- **Mapping**: places each value in the right field, which is where earlier reading most often went wrong.
+- **Irregular cards**: handles the older and non-standard layouts as well as the regular one.
+- **Validation**: checks the card number and identity numbers against existing customer data.
+
+## Approach
+
+Reading and validation are separate steps. A value can be read correctly and still be wrong for the customer, so the checks against existing records run on the structured result, not on the image.

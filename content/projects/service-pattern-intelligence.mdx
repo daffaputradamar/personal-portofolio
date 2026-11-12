@@ -1,0 +1,25 @@
+---
+title: 'Service Pattern Intelligence'
+summary: 'Service recommendations based on each vehicle’s own history and usage, instead of the standard schedule alone.'
+problem: 'Service advice followed a fixed schedule and the advisor’s judgement, without using what the data showed about the individual vehicle.'
+outcome: 'Advisors get a recommendation for each vehicle drawn from its history and usage pattern, with the pattern analysis behind it.'
+author: 'Daffa Akbar'
+publishedAt: '2026-10-01'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Machine learning', '.NET', 'Hangfire', 'SQL Server']
+confidential: true
+category: 'internal'
+---
+
+A recommendation system for after-sales service. It looks at how a particular vehicle has actually been used and serviced, and suggests what it needs next.
+
+## What it does
+
+- **Per-vehicle recommendations**: suggestions follow the vehicle's own history, not only the standard interval.
+- **Pattern analysis**: finds service patterns across the historical data.
+- **Advisor support**: gives the service advisor a data-backed starting point for the conversation.
+
+## Approach
+
+A fixed schedule over-services some vehicles and under-services others. Scheduled jobs build the recommendations from historical data, so they are ready when the vehicle arrives and do not depend on anyone running an analysis at the counter.

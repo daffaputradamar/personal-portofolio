@@ -1,0 +1,26 @@
+---
+title: 'Odometer Validation'
+summary: 'Reads the mileage from an odometer photo, checks the photo is genuine, and compares the reading with the vehicle’s service history.'
+problem: 'Mileage entered at service could disagree with the odometer photo, through typing mistakes or manipulation, and nothing checked the two against each other.'
+outcome: 'Each photo is read and verified automatically, and readings that do not fit the vehicle or its history are flagged.'
+author: 'Daffa Akbar'
+publishedAt: '2026-10-01'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['YOLO', 'PyTorch', 'Transformers', 'FastAPI', '.NET', 'Hangfire', 'SQL Server']
+confidential: true
+category: 'internal'
+---
+
+A validation step for the mileage recorded at each service. Mileage drives service schedules, warranty checks and claims, so a wrong figure has consequences well beyond the one visit.
+
+## What it does
+
+- **Reading**: detects the odometer in the photo and reads the mileage from it.
+- **Photo checks**: looks for signs that the photo is not a genuine, current picture of the vehicle.
+- **History checks**: compares the reading with the vehicle's earlier records and its type.
+- **Flagging**: mismatches are raised for follow-up instead of being accepted silently.
+
+## Approach
+
+A vision model does the reading and a scheduled job does the comparison against history. Keeping inference as its own service means the model can be improved or replaced without touching the jobs that depend on its output.

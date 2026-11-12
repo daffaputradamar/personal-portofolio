@@ -1,0 +1,26 @@
+---
+title: 'Open Question Converter'
+summary: 'Classifies free-text survey answers against an agreed category list, and proposes new categories for a person to approve.'
+problem: 'Open-ended survey answers were grouped by hand, which was slow and gave different results depending on who did the grouping.'
+outcome: 'Answers are grouped consistently against the agreed master list, multi-topic answers are split, and anything that does not fit is flagged with a suggested category for approval.'
+author: 'Daffa Akbar'
+publishedAt: '2026-09-22'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['BERTopic', 'Sentence Transformers', 'LangGraph', 'FastAPI', 'Next.js', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+A tool for analysts who work with survey data. It takes the free-text answers to open questions and sorts them into the categories the business has agreed on.
+
+## What it does
+
+- **Classification against a master list**: every answer is assigned to an agreed category.
+- **Splitting**: an answer that makes two points is separated, so each point is counted.
+- **Suggestions, not silent changes**: answers that fit nothing are marked, with a proposed new category.
+- **Approval**: a proposed category only joins the master list after a person approves it.
+
+## Approach
+
+Topic modelling finds the natural groupings in the answers, and a language model maps them onto the agreed list. The master list stays under human control, so the categories used for reporting cannot drift on their own.

@@ -1,0 +1,25 @@
+---
+title: 'Helpdesk Agent'
+summary: 'Agent that tells employees the progress of their helpdesk ticket, so they no longer have to ask a person to look it up.'
+problem: 'A steady share of helpdesk conversations were people asking where their ticket stood, which an agent then checked by hand.'
+outcome: 'Employees ask the assistant for a ticket’s progress directly, and helpdesk agents spend their time on the tickets themselves.'
+author: 'Daffa Akbar'
+publishedAt: '2026-08-20'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangChain', 'Next.js', 'Drizzle', 'PostgreSQL']
+confidential: true
+category: 'internal'
+---
+
+A helpdesk assistant with one job done well: answering "what is happening with my ticket?".
+
+## What it does
+
+- **Ticket lookup**: checks the progress of a ticket in the service desk system and reports it in plain language.
+- **Self-service**: the employee gets the answer without waiting for an agent.
+- **Usage view**: a dashboard shows how much of the question load the assistant absorbs.
+
+## Approach
+
+The scope was chosen from the helpdesk's own conversation data. Status questions were frequent, simple and fully answerable from the ticketing system, which makes them the right first thing to automate.

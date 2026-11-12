@@ -1,0 +1,26 @@
+---
+title: 'OPER — Event Location Recommendation'
+summary: 'Recommends where to hold sales events from data-warehouse indicators, with the reasoning behind each pick and a dashboard of event results.'
+problem: 'Choosing event locations took manual analysis, and results across areas were hard to compare.'
+outcome: 'Locations are recommended with reasons, event performance is tracked from first contact through to unit sales, and alerts go out when a recommended location has no event.'
+author: 'Daffa Akbar'
+publishedAt: '2026-07-30'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['Next.js', 'MapLibre', 'SQL Server', 'Data warehouse']
+confidential: true
+category: 'internal'
+---
+
+**OPER** (On-Point Event Recommendation) helps sales teams decide where an event is most likely to pay off.
+
+## What it does
+
+- **Recommendations with reasons**: each suggested location comes with the indicators behind it, so the choice can be questioned.
+- **Map view**: recommendations and past events are shown geographically.
+- **Performance dashboard**: follows an event from its funnel and productivity to the units sold.
+- **Alerts**: tells the area team when a recommended location has not had an event.
+
+## Approach
+
+The data warehouse is the single source, so a recommendation and the report that later judges it are built from the same numbers. Showing the reasoning matters as much as the recommendation; a location nobody can explain is one nobody will act on.

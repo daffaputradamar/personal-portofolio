@@ -1,0 +1,26 @@
+---
+title: 'Halo TSD'
+summary: 'Support assistant for the service network that answers operational questions from a managed knowledge base and hands off to a person when it cannot.'
+problem: 'Workshops asked the same operational questions through chat and phone, and an answer depended on whoever was available at the time.'
+outcome: 'A signed-in assistant answers from the support team’s own documents at any hour, and routes the question to the right contact when the documents do not cover it.'
+author: 'Daffa Akbar'
+publishedAt: '2026-03-26'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['RAG', 'Chatbot']
+confidential: true
+category: 'internal'
+---
+
+**Halo TSD** is a support assistant for the service network. It answers day-to-day operational and technical questions from a knowledge base the support team maintains, instead of from whoever happens to be online.
+
+## What it does
+
+- **Grounded answers**: replies are drawn from the team's guides and manuals, retrieved at question time.
+- **Sign-in**: only network users can ask, so the knowledge base is not exposed publicly.
+- **Escalation**: when no document answers the question, the assistant says so and points to the person responsible for that topic.
+- **Owned by the experts**: the support team uploads and updates the documents and watches answer quality.
+
+## Approach
+
+The assistant is deliberately narrow. It answers from the registered documents and nothing else, and a missing answer becomes a hand-off rather than a guess, which is what makes it safe to put in front of people doing operational work.

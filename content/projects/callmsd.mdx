@@ -1,0 +1,26 @@
+---
+title: 'CallMSD'
+summary: 'Self-service assistant for dealers that answers routine questions on stock, sales programmes and incentives from current documents and data.'
+problem: 'Dealers sent routine questions by chat, and a supervisor looked each answer up by hand in spreadsheets and emails.'
+outcome: 'Dealers get an answer at any hour from the latest guidelines and data, and supervisors are left with the questions that need a person.'
+author: 'Daffa Akbar'
+publishedAt: '2026-05-11'
+company: 'PT. Mitra Pinasthika Mulia'
+role: 'AI Engineer'
+tech: ['LangGraph', 'LangChain', 'Next.js', 'Drizzle', 'PostgreSQL', 'SQL Server']
+confidential: true
+category: 'internal'
+---
+
+**CallMSD** is a call-centre assistant for the dealer network. It answers the questions that used to wait for a supervisor to look something up.
+
+## What it does
+
+- **Documents and data together**: answers draw on guideline documents and on tabular data such as stock and programme details.
+- **Managed knowledge**: an admin keeps the assistant's knowledge current as programmes change.
+- **Read-only**: the assistant reports information and cannot modify any data.
+- **Usage view**: a dashboard shows what is being asked.
+
+## Approach
+
+A question about a rule and a question about a number need different handling. The agent decides whether to retrieve a passage or query the data, then answers from whichever source applies, and it only ever reads.
